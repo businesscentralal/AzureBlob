@@ -1,0 +1,7 @@
+﻿{
+    "branchId":  "c86388ee-b516-4225-bc9f-c4c3e1516cb0",
+    "dockerImage":  "mcr.microsoft.com/businesscentral/sandbox",
+    "navVersion":  "14.0.0.0",
+    "navSolution":  "W1",
+    "projectName":  "Azureblob"
+}    

@@ -1,0 +1,31 @@
+{
+    "version":  "0.2.0",
+    "configurations":  [
+                           {
+                               "type":  "al",
+                               "request":  "launch",
+                               "name":  "Your own UserPassword server",
+                               "server":  "http://Azureblob",
+                               "serverInstance":  "NAV",
+                               "authentication":  "UserPassword",
+                               "startupObjectId":  130401,
+                               "startupObjectType":  "Page",
+                               "breakOnError":  false,
+                               "launchBrowser":  true,
+                               "schemaUpdateMode": "Recreate"
+                                                       },
+                           {
+                            "type":  "al",
+                            "request":  "launch",
+                            "name":  "Your own Windows  server",
+                            "server":  "http://Azureblob",
+                            "serverInstance":  "NAV",
+                            "authentication":  "Windows",
+                            "startupObjectId":  130401,
+                            "startupObjectType":  "Page",
+                            "breakOnError":  false,
+                            "launchBrowser":  true,
+                            "schemaUpdateMode": "Synchronize"
+                        }
+                       ]
+}

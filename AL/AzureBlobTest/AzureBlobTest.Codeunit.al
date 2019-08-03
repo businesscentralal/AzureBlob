@@ -134,6 +134,7 @@ codeunit 60299 "Azure Blob Test"
     var
         AzureBlobLibrary: Codeunit "Azure blob Test Library";
         AssertThat: Codeunit Assert;
+        RandomLibrary: Codeunit "Library - Random";
         ExpectedValue: Variant;
         ActualValue: Variant;
         IfErrorTxt: Text;

@@ -15,14 +15,14 @@ codeunit 60203 "Get Azure Blob"
         Authorization: Text;
     begin
         Initialize(AccountName);
-        if StrPos(BlobUrl, ContainerUrl) <> 1 then error(FailedToGetBlobErr + UrlIncorrectErr);
-        BlobUrl := CopyStr(BlobUrl, StrLen(ContainerUrl) + 1);
+        if StrPos(BlobUrl, StorageAccountUrl) <> 1 then error(FailedToGetBlobErr + UrlIncorrectErr);
+        BlobUrl := CopyStr(BlobUrl, StrLen(StorageAccountUrl) + 1);
 
         CanonicalizedHeaders := 'x-ms-date:' + UTCDateTimeText + NewLine + 'x-ms-version:2015-02-21';
         CanonicalizedResource := StrSubstNo('/%1/%2', AccountName, BlobUrl);
         Authorization := HMACSHA256Mgt.GetAuthorization(AccountName, AccountPrivateKey, HMACSHA256Mgt.GetTextToHash('GET', '', CanonicalizedHeaders, CanonicalizedResource, ''));
 
-        WebRequest.SetRequestUri(ContainerUrl + BlobUrl);
+        WebRequest.SetRequestUri(StorageAccountUrl + BlobUrl);
         WebRequest.Method('GET');
         WebRequest.GetHeaders(WebHeaders);
         WebHeaders.Add('Authorization', Authorization);
@@ -52,13 +52,13 @@ codeunit 60203 "Get Azure Blob"
     begin
         NewLine[1] := 10;
         UTCDateTimeText := UTCDateTimeMgt.GetUTCDateTimeText();
-        ContainerUrl := 'https://' + AccountName + '.blob.core.windows.net/';
+        StorageAccountUrl := 'https://' + AccountName + '.blob.core.windows.net/';
     end;
 
     var
         FailedToGetBlobErr: Label 'Failed to download a blob: ';
         UrlIncorrectErr: Label 'Url incorrect.';
         UTCDateTimeText: Text;
-        ContainerUrl: Text;
+        StorageAccountUrl: Text;
         NewLine: Text[1];
 }

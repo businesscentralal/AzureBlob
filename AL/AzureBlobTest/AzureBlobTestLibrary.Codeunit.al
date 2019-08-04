@@ -23,6 +23,6 @@ codeunit 60298 "Azure blob Test Library"
 
     procedure GetDemoBlobDownloadUrl(): Text
     begin
-        exit('https://365links.blob.core.windows.net/azureblobtest/ANNA_20190215_0003-thumb.jpg?sp=r&st=2019-08-03T19:40:45Z&se=2019-08-04T03:40:45Z&spr=https&sv=2018-03-28&sig=Js8jbOpjHx%2BMn91IsSol368vAB5sVGhLjbyQ42C85ek%3D&sr=b');
+        exit('https://365links.blob.core.windows.net/azureblobdemo/ANNA_20190215_0003-thumb.png');
     end;
 }

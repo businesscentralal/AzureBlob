@@ -131,6 +131,38 @@ codeunit 60299 "Azure Blob Test"
         AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
     end;
 
+    [Test]
+    procedure VerifyBlobUpload();
+    var
+        TempBlob: Record TempBlob;
+        DownloadBlob: Codeunit "Download Blob";
+        PutAzureBlob: Codeunit "Put Azure Blob";
+        WebRequestHelper: Codeunit "Web Request Helper";
+        AccountName: Text;
+        AccountContainer: Text;
+        AccountPrivateKey: Text;
+        FileName: Text;
+        BlobUrl: Text;
+    begin
+        // [Scenario] Upload Image to container
+
+        // [Given] Setup: 
+        DownloadBlob.DownloadDemoBlob(AzureBlobLibrary.GetDemoBlobDownloadUrl(), TempBlob);
+        AccountName := AzureBlobLibrary.GetAccountName();
+        AccountContainer := AzureBlobLibrary.GetAccountContainer();
+        AccountPrivateKey := AzureBlobLibrary.GetAccountPrivateKey();
+        FileName := 'Demo-' + RandomLibrary.RandText(20) + '.jpg';
+
+        // [When] Exercise:      
+        BlobUrl := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountPrivateKey, FileName);
+
+        // [Then] Verify: 
+        ExpectedValue := true;
+        ActualValue := WebRequestHelper.IsValidUri(BlobUrl);
+        IfErrorTxt := 'Failed to upload jpg image';
+        AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
+    end;
+
     var
         AzureBlobLibrary: Codeunit "Azure blob Test Library";
         AssertThat: Codeunit Assert;

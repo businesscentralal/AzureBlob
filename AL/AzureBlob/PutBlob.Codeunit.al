@@ -17,8 +17,8 @@ codeunit 60204 "Put Azure Blob"
         if not TempBlob.Blob.HasValue() then exit('');
 
         Initialize(AccountName);
-        BlobUrl := AccountContainer + '/' + FileMgt.GetSafeFileName(GetRandomFileName(TempBlob) + '.' + FileMgt.GetExtension(FileName));
         FileName := FileMgt.GetSafeFileName(FileName);
+        BlobUrl := AccountContainer + '/' + FileName;
 
         CanonicalizedHeaders := 'x-ms-blob-content-disposition:attachment; filename="' + FileName + '"' + NewLine + 'x-ms-blob-type:BlockBlob' + NewLine + 'x-ms-date:' + UTCDateTimeText + NewLine + 'x-ms-version:2015-02-21';
         CanonicalizedResource := StrSubstNo('/%1/%2', AccountName, BlobUrl);
@@ -52,17 +52,6 @@ codeunit 60204 "Put Azure Blob"
         NewLine[1] := 10;
         UTCDateTimeText := UTCDateTimeMgt.GetUTCDateTimeText();
         StorageAccountUrl := 'https://' + AccountName + '.blob.core.windows.net/';
-    end;
-
-    local procedure GetRandomFileName(TempBlob: Record TempBlob) RandomFileName: Text
-    var
-        EncryptionMgt: Codeunit "Encryption Management";
-        StringConversionMgt: Codeunit StringConversionManagement;
-        InStr: InStream;
-        HashAlgorithmType: Option HMACMD5,HMACSHA1,HMACSHA256,HMACSHA384,HMACSHA512;
-    begin
-        TempBlob.Blob.CreateInStream(InStr);
-        RandomFileName := LowerCase(Format(StringConversionMgt.RemoveNonAlphaNumericCharacters(CreateGuid())) + EncryptionMgt.GenerateHashFromStream(InStr, HashAlgorithmType::HMACMD5));
     end;
 
     var

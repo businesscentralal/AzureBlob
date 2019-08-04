@@ -137,6 +137,7 @@ codeunit 60299 "Azure Blob Test"
         TempBlob: Record TempBlob;
         DownloadBlob: Codeunit "Download Blob";
         PutAzureBlob: Codeunit "Put Azure Blob";
+        FileNameMgt: Codeunit "File Name Management";
         WebRequestHelper: Codeunit "Web Request Helper";
         AccountName: Text;
         AccountContainer: Text;
@@ -151,7 +152,7 @@ codeunit 60299 "Azure Blob Test"
         AccountName := AzureBlobLibrary.GetAccountName();
         AccountContainer := AzureBlobLibrary.GetAccountContainer();
         AccountPrivateKey := AzureBlobLibrary.GetAccountPrivateKey();
-        FileName := 'Demo-' + RandomLibrary.RandText(20) + '.jpg';
+        FileName := 'Demo-' + FileNameMgt.GetRandomFileName(TempBlob, '.jpg');
 
         // [When] Exercise:      
         BlobUrl := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountPrivateKey, FileName);
@@ -163,10 +164,43 @@ codeunit 60299 "Azure Blob Test"
         AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
     end;
 
+    [Test]
+    procedure VerifyBlobUpdate();
+    var
+        TempBlob: Record TempBlob;
+        DownloadBlob: Codeunit "Download Blob";
+        PutAzureBlob: Codeunit "Put Azure Blob";
+        FileNameMgt: Codeunit "File Name Management";
+        AccountName: Text;
+        AccountContainer: Text;
+        AccountPrivateKey: Text;
+        FileName: Text;
+        BlobUrl1: Text;
+        BlobUrl2: Text;
+    begin
+        // [Scenario] Update already uploaded Image in container
+
+        // [Given] Setup: 
+        DownloadBlob.DownloadDemoBlob(AzureBlobLibrary.GetDemoBlobDownloadUrl(), TempBlob);
+        AccountName := AzureBlobLibrary.GetAccountName();
+        AccountContainer := AzureBlobLibrary.GetAccountContainer();
+        AccountPrivateKey := AzureBlobLibrary.GetAccountPrivateKey();
+        FileName := 'Demo-' + FileNameMgt.GetRandomFileName(TempBlob, '.jpg');
+
+        // [When] Exercise:      
+        BlobUrl1 := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountPrivateKey, FileName);
+        BlobUrl2 := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountPrivateKey, FileName);
+
+        // [Then] Verify: 
+        ExpectedValue := BlobUrl1;
+        ActualValue := BlobUrl2;
+        IfErrorTxt := 'Failed to update blob';
+        AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
+    end;
+
     var
         AzureBlobLibrary: Codeunit "Azure blob Test Library";
         AssertThat: Codeunit Assert;
-        RandomLibrary: Codeunit "Library - Random";
         ExpectedValue: Variant;
         ActualValue: Variant;
         IfErrorTxt: Text;

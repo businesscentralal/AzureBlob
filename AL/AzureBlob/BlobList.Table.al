@@ -123,4 +123,22 @@ table 60200 "Azure Blob List"
         if Xml.SelectSingleNode(NodeMgt.GetNodeXPath('Marker'), BlobNode) then
             NextMarker := BlobNode.AsXmlElement().InnerText();
     end;
+
+    procedure WriteToJObject(ContainerUrl: Text; var JObject: JsonObject)
+    var
+        JArray: JsonArray;
+        BlobObject: JsonObject;
+    begin
+        if FindSet() then
+            repeat
+                Clear(BlobObject);
+                BlobObject.Add('Path', ContainerUrl + Name);
+                BlobObject.Add('Name', Name);
+                BlobObject.Add('Size', "Content Length");
+                BlobObject.Add('Date', DT2Date("Last Modified"));
+                BlobObject.Add('Time', DT2Time("Last Modified"));
+                JArray.Add(BlobObject);
+            until Next() = 0;
+        JObject.Add('List', JArray);
+    end;
 }

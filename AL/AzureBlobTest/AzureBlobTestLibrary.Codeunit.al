@@ -37,7 +37,7 @@ codeunit 60298 "Azure blob Test Library"
             '      <Snapshot>date-time-value</Snapshot>' +
             '      <Properties> ' +
             '        <Creation-Time>date-time-value</Creation-Time>' +
-            '        <Last-Modified>2002-05-30T09:30:10Z</Last-Modified>  ' +
+            '        <Last-Modified>Fri, 26 Jun 2015 23:39:12 GMT</Last-Modified>  ' +
             '        <Etag>etag</Etag>  ' +
             '        <Content-Length>1234</Content-Length>  ' +
             '        <Content-Type>blob-content-type</Content-Type>  ' +

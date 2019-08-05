@@ -259,10 +259,10 @@ codeunit 60299 "Azure Blob Test"
         // [Then] Verify Record Created:
         AssertThat.RecordCount(BlobList, 1);
 
-        // [Then] Verify Record Values: 2002-05-30T09:30:10Z
+        // [Then] Verify Record Values:Fri, 26 Jun 2015 23:39:12 GMT
         BlobList.FindFirst();
         AssertThat.AreEqual('blob-name', BlobList.Name, 'Failed to verify Blob List field value');
-        AssertThat.AreEqual(CreateDateTime(DMY2Date(30, 05, 2002), 093010T), BlobList."Last Modified", 'Failed to verify Blob List field value');
+        AssertThat.AreEqual(CreateDateTime(DMY2Date(26, 06, 2015), 233912T), BlobList."Last Modified", 'Failed to verify Blob List field value');
         AssertThat.AreEqual('blob-content-type', BlobList."Content Type", 'Failed to verify Blob List field value');
         AssertThat.AreEqual(1234, BlobList."Content Length", 'Failed to verify Blob List field value');
         AssertThat.AreEqual('etag', BlobList."E-Tag", 'Failed to verify Blob List field value');
@@ -303,6 +303,147 @@ codeunit 60299 "Azure Blob Test"
     end;
 
     [Test]
+    procedure VerifyJSONInterface()
+    var
+        Tempblob: Record TempBlob;
+        DownloadBlob: Codeunit "Download Blob";
+        JSONInterface: Codeunit "Azure Blob JSON Interface";
+        FileNameMgt: Codeunit "File Name Management";
+        JArray: JsonArray;
+        JObject: JsonObject;
+        JToken: JsonToken;
+        JSON: Text;
+        AccountName: Text;
+        AccountContainer: Text;
+        AccountPrivateKey: Text;
+        FileName: Text;
+        BlobUrl: Text;
+        ContentLength: Integer;
+    begin
+        // [Scenario] Verify methods in Json Interface
+
+        // [Given] Setup: 
+        AccountName := AzureBlobLibrary.GetAccountName();
+        AccountContainer := AzureBlobLibrary.GetAccountContainer();
+        AccountPrivateKey := AzureBlobLibrary.GetAccountPrivateKey();
+        DownloadBlob.DownloadDemoBlob(AzureBlobLibrary.GetDemoBlobDownloadUrl(), TempBlob);
+        FileName := 'Test-' + FileNameMgt.GetRandomFileName(TempBlob, '.jpg');
+        ContentLength := Tempblob.Blob.Length;
+
+        // [When] Exercise: Put Blob
+        SetConfiguration(AccountName, AccountContainer, AccountPrivateKey, JObject);
+        JObject.Add('Method', 'PutBlob');
+        JObject.Add('FileName', FileName);
+        JObject.Add('Content', Tempblob.ToBase64String());
+        JObject.WriteTo(JSON);
+        Tempblob.WriteAsText(JSON, TextEncoding::UTF8);
+        JSONInterface.Run(Tempblob);
+        JObject.ReadFrom(Tempblob.ReadAsTextWithCRLFLineSeparator());
+        JObject.Get('Url', JToken);
+        BlobUrl := JToken.AsValue().AsText();
+
+        // [Then] Verify BlobUrl
+        ExpectedValue := 'https://' + AccountName + '.blob.core.windows.net/' + AccountContainer + '/' + FileName;
+        ActualValue := BlobUrl;
+        IfErrorTxt := 'Failed to verify the Put blob Method';
+        AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
+
+        // [When] Exercise: Get Blob
+        SetConfiguration(AccountName, AccountContainer, AccountPrivateKey, JObject);
+        JObject.Add('Method', 'GetBlob');
+        JObject.Add('Url', BlobUrl);
+        JObject.WriteTo(JSON);
+        Tempblob.WriteAsText(JSON, TextEncoding::UTF8);
+        JSONInterface.Run(Tempblob);
+        JObject.ReadFrom(Tempblob.ReadAsTextWithCRLFLineSeparator());
+        JObject.Get('Content', JToken);
+        Tempblob.Init();
+        Tempblob.FromBase64String(JToken.AsValue().AsText());
+        JObject.Get('Content-Length', JToken);
+
+        // [Then] Verify Content Length
+        ExpectedValue := 114074;
+        ActualValue := JToken.AsValue().AsInteger();
+        IfErrorTxt := 'Failed to verify the Get blob Method';
+        AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
+
+        // [Then] Verify Blob Length
+        ExpectedValue := ContentLength;
+        ActualValue := Tempblob.Blob.Length;
+        IfErrorTxt := 'Failed to verify the Get blob Method';
+        AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
+
+        // [When] Exercise: List Blob
+        SetConfiguration(AccountName, AccountContainer, AccountPrivateKey, JObject);
+        JObject.Add('Method', 'ListBlob');
+        JObject.WriteTo(JSON);
+        Tempblob.WriteAsText(JSON, TextEncoding::UTF8);
+        JSONInterface.Run(Tempblob);
+        JObject.ReadFrom(Tempblob.ReadAsTextWithCRLFLineSeparator());
+        JObject.Get('List', JToken);
+        JArray := JToken.AsArray();
+        JArray.SelectToken(StrSubstNo('$[?(@.%1 == ''%2'')]', 'Name', FileName), JToken);
+        JObject := JToken.AsObject();
+
+        // [Then] Verify File Name
+        JObject.Get('Name', JToken);
+        ExpectedValue := FileName;
+        ActualValue := JToken.AsValue().AsText();
+        IfErrorTxt := 'Failed to verify the List blob Method';
+        AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
+
+        // [Then] Verify File Path
+        JObject.Get('Path', JToken);
+        ExpectedValue := 'https://' + AccountName + '.blob.core.windows.net/' + AccountContainer + '/' + FileName;
+        ActualValue := JToken.AsValue().AsText();
+        IfErrorTxt := 'Failed to verify the List blob Method';
+        AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
+
+        // [Then] Verify File Size
+        JObject.Get('Size', JToken);
+        ExpectedValue := 114074;
+        ActualValue := JToken.AsValue().AsInteger();
+        IfErrorTxt := 'Failed to verify the List blob Method';
+        AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
+
+        // [Then] Verify File Date
+        JObject.Get('Date', JToken);
+        ExpectedValue := 0D;
+        ActualValue := JToken.AsValue().AsDate();
+        IfErrorTxt := 'Failed to verify the List blob Method';
+        AssertThat.AreNotEqual(ExpectedValue, ActualValue, IfErrorTxt);
+
+        // [Then] Verify File Date
+        JObject.Get('Time', JToken);
+        ExpectedValue := 0T;
+        ActualValue := JToken.AsValue().AsTime();
+        IfErrorTxt := 'Failed to verify the List blob Method';
+        AssertThat.AreNotEqual(ExpectedValue, ActualValue, IfErrorTxt);
+
+        // [When] Exercise: Delete Blob
+        SetConfiguration(AccountName, AccountContainer, AccountPrivateKey, JObject);
+        JObject.Add('Method', 'DeleteBlob');
+        JObject.Add('Url', BlobUrl);
+        JObject.WriteTo(JSON);
+        Tempblob.WriteAsText(JSON, TextEncoding::UTF8);
+        JSONInterface.Run(Tempblob);
+        JObject.ReadFrom(Tempblob.ReadAsTextWithCRLFLineSeparator());
+        JObject.Get('Success', JToken);
+
+        // [Then] Verify Not in Blob List
+        SetConfiguration(AccountName, AccountContainer, AccountPrivateKey, JObject);
+        JObject.Add('Method', 'ListBlob');
+        JObject.WriteTo(JSON);
+        Tempblob.WriteAsText(JSON, TextEncoding::UTF8);
+        JSONInterface.Run(Tempblob);
+        JObject.ReadFrom(Tempblob.ReadAsTextWithCRLFLineSeparator());
+        JObject.Get('List', JToken);
+        JArray := JToken.AsArray();
+        asserterror JArray.SelectToken(StrSubstNo('$[?(@.%1 == ''%2'')]', 'Name', FileName), JToken);
+
+    end;
+
+    [Test]
     procedure DeleteAllTestBlobs();
     var
         BlobList: Record "Azure Blob List" temporary;
@@ -328,6 +469,14 @@ codeunit 60299 "Azure Blob Test"
                 DeleteAzureBlob.DeleteBlob(AccountName, AccountContainer, AccountPrivateKey, ContainerUrl + BlobList.Name);
             until BlobList.Next() = 0;
 
+    end;
+
+    local procedure SetConfiguration(AccountName: Text; AccountContainer: Text; AccountPrivateKey: Text; var JObject: JsonObject)
+    begin
+        Clear(JObject);
+        JObject.Add('Name', AccountName);
+        JObject.Add('Container', AccountContainer);
+        JObject.Add('PrivateKey', AccountPrivateKey);
     end;
 
     var

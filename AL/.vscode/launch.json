@@ -12,7 +12,7 @@
                                "startupObjectType":  "Page",
                                "breakOnError":  false,
                                "launchBrowser":  true,
-                               "schemaUpdateMode": "Recreate"
+                               "schemaUpdateMode": "Synchronize"
                                                        },
                            {
                             "type":  "al",

@@ -4,7 +4,7 @@ table 60200 "Azure Blob List"
 
     fields
     {
-        field(1; Name; Text[2048])
+        field(1; Name; Text[250])
         {
             DataClassification = EndUserIdentifiableInformation;
             Caption = 'Name';

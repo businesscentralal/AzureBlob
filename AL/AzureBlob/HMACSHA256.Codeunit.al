@@ -1,4 +1,4 @@
-codeunit 60201 "HMACSHA256 Management"
+codeunit 60201 "Azure Blob HMACSHA256 Mgt."
 {
     procedure GetTextToHash(Verb: Text; ContentType: Text; CanonicalizedHeaders: Text; CanonicalizedResource: Text; ContentLength: Text) TextToHash: Text
     begin

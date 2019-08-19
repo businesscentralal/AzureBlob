@@ -2,7 +2,7 @@ codeunit 60204 "Put Azure Blob"
 {
     procedure PutBlob(VAR TempBlob: Record Tempblob temporary; AccountName: Text; AccountContainer: Text; AccountPrivateKey: Text; FileName: Text) BlobUrl: Text
     var
-        HMACSHA256Mgt: Codeunit "HMACSHA256 Management";
+        HMACSHA256Mgt: Codeunit "Azure Blob HMACSHA256 Mgt.";
         FileMgt: Codeunit "File Management";
         WebRequest: HttpRequestMessage;
         WebResponse: HttpResponseMessage;
@@ -47,7 +47,7 @@ codeunit 60204 "Put Azure Blob"
 
     local procedure Initialize(AccountName: Text)
     var
-        UTCDateTimeMgt: Codeunit "UTC DateTime Management";
+        UTCDateTimeMgt: Codeunit "Azure Blob UTC DateTime Mgt.";
     begin
         NewLine[1] := 10;
         UTCDateTimeText := UTCDateTimeMgt.GetUTCDateTimeText();

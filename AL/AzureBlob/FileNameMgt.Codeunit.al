@@ -1,4 +1,4 @@
-codeunit 60207 "File Name Management"
+codeunit 60207 "Azure Blob File Name Mgt."
 {
     procedure GetRandomFileName(TempBlob: Record TempBlob; FileExtension: Text) RandomFileName: Text
     var

@@ -2,7 +2,7 @@ codeunit 60202 "List Azure Blob"
 {
     procedure ListBlob(AccountName: Text; AccountContainer: Text; AccountPrivateKey: Text; Marker: Text) Xml: XmlDocument
     var
-        HMACSHA256Mgt: Codeunit "HMACSHA256 Management";
+        HMACSHA256Mgt: Codeunit "Azure Blob HMACSHA256 Mgt.";
         WebRequest: HttpRequestMessage;
         WebResponse: HttpResponseMessage;
         WebContent: HttpContent;
@@ -44,7 +44,7 @@ codeunit 60202 "List Azure Blob"
 
     local procedure Initialize(AccountName: Text)
     var
-        UTCDateTimeMgt: Codeunit "UTC DateTime Management";
+        UTCDateTimeMgt: Codeunit "Azure Blob UTC DateTime Mgt.";
     begin
         NewLine[1] := 10;
         UTCDateTimeText := UTCDateTimeMgt.GetUTCDateTimeText();

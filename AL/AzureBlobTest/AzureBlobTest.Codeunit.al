@@ -5,7 +5,7 @@ codeunit 60299 "Azure Blob Test"
     [Test]
     procedure VerifyUTCDateParse();
     var
-        UTCDateTimeMgt: Codeunit "UTC DateTime Management";
+        UTCDateTimeMgt: Codeunit "Azure Blob UTC DateTime Mgt.";
         ExampleDateTime: DateTime;
         ExampleDateTimeText: Text;
     begin
@@ -26,7 +26,7 @@ codeunit 60299 "Azure Blob Test"
     [Test]
     procedure VerifyTextToHash();
     var
-        HMACSHA256Mgt: Codeunit "HMACSHA256 Management";
+        HMACSHA256Mgt: Codeunit "Azure Blob HMACSHA256 Mgt.";
         TextToHash: Text;
         CanonicalizedHeaders: Text;
         CanonicalizedResource: Text;
@@ -51,7 +51,7 @@ codeunit 60299 "Azure Blob Test"
     [Test]
     procedure VerifyHMACSHA256();
     var
-        HMACSHA256Mgt: Codeunit "HMACSHA256 Management";
+        HMACSHA256Mgt: Codeunit "Azure Blob HMACSHA256 Mgt.";
         AccountPrivateKey: Text;
         TextToHash: Text;
         CanonicalizedHeaders: Text;
@@ -83,7 +83,7 @@ codeunit 60299 "Azure Blob Test"
         TempBlob: Record TempBlob;
         DownloadBlob: Codeunit "Download Blob";
         PutAzureBlob: Codeunit "Put Azure Blob";
-        FileNameMgt: Codeunit "File Name Management";
+        FileNameMgt: Codeunit "Azure Blob File Name Mgt.";
         WebRequestHelper: Codeunit "Web Request Helper";
         AccountName: Text;
         AccountContainer: Text;
@@ -116,7 +116,7 @@ codeunit 60299 "Azure Blob Test"
         TempBlob: Record TempBlob;
         DownloadBlob: Codeunit "Download Blob";
         PutAzureBlob: Codeunit "Put Azure Blob";
-        FileNameMgt: Codeunit "File Name Management";
+        FileNameMgt: Codeunit "Azure Blob File Name Mgt.";
         AccountName: Text;
         AccountContainer: Text;
         AccountPrivateKey: Text;
@@ -151,7 +151,7 @@ codeunit 60299 "Azure Blob Test"
         DownloadBlob: Codeunit "Download Blob";
         PutAzureBlob: Codeunit "Put Azure Blob";
         GetAzureBlob: Codeunit "Get Azure Blob";
-        FileNameMgt: Codeunit "File Name Management";
+        FileNameMgt: Codeunit "Azure Blob File Name Mgt.";
         AccountName: Text;
         AccountContainer: Text;
         AccountPrivateKey: Text;
@@ -214,7 +214,7 @@ codeunit 60299 "Azure Blob Test"
         DownloadBlob: Codeunit "Download Blob";
         PutAzureBlob: Codeunit "Put Azure Blob";
         DeleteAzureBlob: Codeunit "Delete Azure Blob";
-        FileNameMgt: Codeunit "File Name Management";
+        FileNameMgt: Codeunit "Azure Blob File Name Mgt.";
         AccountName: Text;
         AccountContainer: Text;
         AccountPrivateKey: Text;
@@ -277,7 +277,7 @@ codeunit 60299 "Azure Blob Test"
         BlobList: Record "Azure Blob List" temporary;
         DownloadBlob: Codeunit "Download Blob";
         PutAzureBlob: Codeunit "Put Azure Blob";
-        FileNameMgt: Codeunit "File Name Management";
+        FileNameMgt: Codeunit "Azure Blob File Name Mgt.";
         AccountName: Text;
         AccountContainer: Text;
         AccountPrivateKey: Text;
@@ -308,7 +308,7 @@ codeunit 60299 "Azure Blob Test"
         Tempblob: Record TempBlob;
         DownloadBlob: Codeunit "Download Blob";
         JSONInterface: Codeunit "Azure Blob JSON Interface";
-        FileNameMgt: Codeunit "File Name Management";
+        FileNameMgt: Codeunit "Azure Blob File Name Mgt.";
         JArray: JsonArray;
         JObject: JsonObject;
         JToken: JsonToken;

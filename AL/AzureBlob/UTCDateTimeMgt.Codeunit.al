@@ -1,4 +1,4 @@
-codeunit 60200 "UTC DateTime Management"
+codeunit 60200 "Azure Blob UTC DateTime Mgt."
 {
     trigger OnRun()
     begin

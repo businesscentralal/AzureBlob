@@ -2,7 +2,7 @@ codeunit 60205 "Delete Azure Blob"
 {
     procedure DeleteBlob(AccountName: Text; AccountContainer: Text; AccountPrivateKey: Text; BlobUrl: Text)
     var
-        HMACSHA256Mgt: Codeunit "HMACSHA256 Management";
+        HMACSHA256Mgt: Codeunit "Azure Blob HMACSHA256 Mgt.";
         WebRequest: HttpRequestMessage;
         WebResponse: HttpResponseMessage;
         WebContent: HttpContent;
@@ -35,7 +35,7 @@ codeunit 60205 "Delete Azure Blob"
 
     local procedure Initialize(AccountName: Text)
     var
-        UTCDateTimeMgt: Codeunit "UTC DateTime Management";
+        UTCDateTimeMgt: Codeunit "Azure Blob UTC DateTime Mgt.";
     begin
         NewLine[1] := 10;
         UTCDateTimeText := UTCDateTimeMgt.GetUTCDateTimeText();

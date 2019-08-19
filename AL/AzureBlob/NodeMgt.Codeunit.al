@@ -43,7 +43,7 @@ codeunit 60208 "Azure Blob Node Mgt."
 
     procedure FindNodeDateTimeValue(XmlSearchNode: XmlNode; NodeName: Text) NodeValue: DateTime
     var
-        UTCDateTimeMgt: Codeunit "UTC DateTime Management";
+        UTCDateTimeMgt: Codeunit "Azure Blob UTC DateTime Mgt.";
     begin
         exit(UTCDateTimeMgt.ParseUTCDateTimeText(FindNodeTextValue(XmlSearchNode, NodeName)));
     end;

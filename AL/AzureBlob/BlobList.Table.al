@@ -77,7 +77,7 @@ table 60200 "Azure Blob List"
 
     end;
 
-    procedure ReadBlobList(AccountName: Text; AccountContainer: Text; AccountPrivateKey: Text)
+    procedure ReadBlobList(AccountName: Text; AccountContainer: Text; AccountAccessKey: Text)
     var
         ListAzureBlob: Codeunit "List Azure Blob";
         NextMarker: Text;
@@ -86,10 +86,10 @@ table 60200 "Azure Blob List"
         if not IsTemporary() then
             error(RecordNotTemporaryErr, TableCaption);
         DeleteAll();
-        Xml := ListAzureBlob.ListBlob(AccountName, AccountContainer, AccountPrivateKey, NextMarker);
+        Xml := ListAzureBlob.ListBlob(AccountName, AccountContainer, AccountAccessKey, NextMarker);
         NextMarker := ReadXml(Xml);
         while NextMarker <> '' do begin
-            Xml := ListAzureBlob.ListBlob(AccountName, AccountContainer, AccountPrivateKey, NextMarker);
+            Xml := ListAzureBlob.ListBlob(AccountName, AccountContainer, AccountAccessKey, NextMarker);
             NextMarker := ReadXml(Xml);
         end;
     end;

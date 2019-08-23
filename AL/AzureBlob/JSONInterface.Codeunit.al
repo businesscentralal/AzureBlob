@@ -12,19 +12,19 @@ codeunit 60209 "Azure Blob JSON Interface"
         JObject: JsonObject;
         AccountName: Text;
         AccountContainer: Text;
-        AccountPrivateKey: Text;
+        AccountAccessKey: Text;
         ContainerUrl: Text;
         BlobUrl: Text;
         FileName: Text;
     begin
         ReadJSON(Rec, JObject);
-        ReadConfiguration(JObject, AccountName, AccountContainer, AccountPrivateKey);
+        ReadConfiguration(JObject, AccountName, AccountContainer, AccountAccessKey);
         case GetJSONValue(JObject, 'Method') of
             'GetBlob':
                 begin
                     BlobUrl := GetJSONValue(JObject, 'Url');
                     Clear(JObject);
-                    JObject.Add('Content-Length', GetBlob.GetBlob(TempBlob, AccountName, AccountContainer, AccountPrivateKey, BlobUrl));
+                    JObject.Add('Content-Length', GetBlob.GetBlob(TempBlob, AccountName, AccountContainer, AccountAccessKey, BlobUrl));
                     JObject.Add('Content', TempBlob.ToBase64String());
                     JObject.Add('Success', true);
                     WriteJSON(JObject, Rec);
@@ -34,7 +34,7 @@ codeunit 60209 "Azure Blob JSON Interface"
                     FileName := GetJSONValue(JObject, 'FileName');
                     Tempblob.FromBase64String(GetJSONValue(JObject, 'Content'));
                     Clear(JObject);
-                    JObject.Add('Url', PutBlob.PutBlob(Tempblob, AccountName, AccountContainer, AccountPrivateKey, FileName));
+                    JObject.Add('Url', PutBlob.PutBlob(Tempblob, AccountName, AccountContainer, AccountAccessKey, FileName));
                     JObject.Add('Success', true);
                     WriteJSON(JObject, Rec);
                 end;
@@ -42,13 +42,13 @@ codeunit 60209 "Azure Blob JSON Interface"
                 begin
                     BlobUrl := GetJSONValue(JObject, 'Url');
                     Clear(JObject);
-                    DeleteBlob.DeleteBlob(AccountName, AccountContainer, AccountPrivateKey, BlobUrl);
+                    DeleteBlob.DeleteBlob(AccountName, AccountContainer, AccountAccessKey, BlobUrl);
                     JObject.Add('Success', true);
                     WriteJSON(JObject, Rec);
                 end;
             'ListBlob':
                 begin
-                    BlobList.ReadBlobList(AccountName, AccountContainer, AccountPrivateKey);
+                    BlobList.ReadBlobList(AccountName, AccountContainer, AccountAccessKey);
                     Clear(JObject);
                     BlobList.WriteToJObject('https://' + AccountName + '.blob.core.windows.net/' + AccountContainer + '/', JObject);
                     JObject.Add('Success', true);
@@ -72,11 +72,11 @@ codeunit 60209 "Azure Blob JSON Interface"
             exit(JToken.AsValue().AsText());
     end;
 
-    local procedure ReadConfiguration(JObject: JsonObject; var AccountName: Text; var AccountContainer: Text; var AccountPrivateKey: Text)
+    local procedure ReadConfiguration(JObject: JsonObject; var AccountName: Text; var AccountContainer: Text; var AccountAccessKey: Text)
     begin
         AccountName := GetJSONValue(JObject, 'Name');
         AccountContainer := GetJSONValue(JObject, 'Container');
-        AccountPrivateKey := GetJSONValue(JObject, 'PrivateKey')
+        AccountAccessKey := GetJSONValue(JObject, 'AccessKey')
     end;
 
     local procedure WriteJSON(JObject: JsonObject; var TempBlob: Record Tempblob)

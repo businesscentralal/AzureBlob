@@ -1,6 +1,6 @@
 codeunit 60202 "List Azure Blob"
 {
-    procedure ListBlob(AccountName: Text; AccountContainer: Text; AccountPrivateKey: Text; Marker: Text) Xml: XmlDocument
+    procedure ListBlob(AccountName: Text; AccountContainer: Text; AccountAccessKey: Text; Marker: Text) Xml: XmlDocument
     var
         HMACSHA256Mgt: Codeunit "Azure Blob HMACSHA256 Mgt.";
         WebRequest: HttpRequestMessage;
@@ -18,7 +18,7 @@ codeunit 60202 "List Azure Blob"
 
         CanonicalizedHeaders := 'x-ms-date:' + UTCDateTimeText + NewLine + 'x-ms-version:2015-02-21';
         CanonicalizedResource := StrSubstNo('/%1/%2', AccountName, AccountContainer) + NewLine + 'comp:list' + NewLine + 'marker:' + Marker + NewLine + 'restype:container';
-        Authorization := HMACSHA256Mgt.GetAuthorization(AccountName, AccountPrivateKey, HMACSHA256Mgt.GetTextToHash('GET', '', CanonicalizedHeaders, CanonicalizedResource, ''));
+        Authorization := HMACSHA256Mgt.GetAuthorization(AccountName, AccountAccessKey, HMACSHA256Mgt.GetTextToHash('GET', '', CanonicalizedHeaders, CanonicalizedResource, ''));
 
         WebRequest.SetRequestUri(StorageAccountUrl + AccountContainer + StrSubstNo('?restype=container&comp=list&marker=%1', Marker));
         WebRequest.Method('GET');

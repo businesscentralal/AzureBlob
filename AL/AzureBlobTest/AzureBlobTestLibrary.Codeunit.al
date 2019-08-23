@@ -10,7 +10,7 @@ codeunit 60298 "Azure blob Test Library"
         exit('azureblobtest');
     end;
 
-    procedure GetAccountPrivateKey(): Text
+    procedure GetAccountAccessKey(): Text
     begin
         // Your current Access Key
         exit('BwAOOF89WF4yHlM0HtINL/V8n+eEPrjD3+69bX3k0UC4pRq3RejMAuW7WgMwRQbSufvqCkQxi6dg2Lrql2mG9w==');

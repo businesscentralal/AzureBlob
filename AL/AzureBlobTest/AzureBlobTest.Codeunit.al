@@ -52,7 +52,7 @@ codeunit 60299 "Azure Blob Test"
     procedure VerifyHMACSHA256();
     var
         HMACSHA256Mgt: Codeunit "Azure Blob HMACSHA256 Mgt.";
-        AccountPrivateKey: Text;
+        AccountAccessKey: Text;
         TextToHash: Text;
         CanonicalizedHeaders: Text;
         CanonicalizedResource: Text;
@@ -65,10 +65,10 @@ codeunit 60299 "Azure Blob Test"
         CanonicalizedHeaders := 'x-ms-date:Fri, 26 Jun 2015 23:39:12 GMT' + NewLine + 'x-ms-version:2015-02-21';
         CanonicalizedResource := '/myaccount/mycontainer' + NewLine + 'restype:container' + NewLine + 'timeout:30';
         TextToHash := HMACSHA256Mgt.GetTextToHash('PUT', '', CanonicalizedHeaders, CanonicalizedResource, '');
-        AccountPrivateKey := 'gcHIfdErQ+k3J8VhB5QSxxl9WzHrrdLc9qVqJ/Fl8RGAhIK2bqCCoGEcVqHvFyFRVOA1YwRygl/BLXKME3T/ag==';
+        AccountAccessKey := 'gcHIfdErQ+k3J8VhB5QSxxl9WzHrrdLc9qVqJ/Fl8RGAhIK2bqCCoGEcVqHvFyFRVOA1YwRygl/BLXKME3T/ag==';
 
         // [When] Exercise:         
-        Authorization := HMACSHA256Mgt.GetAuthorization('myaccount', AccountPrivateKey, TextToHash);
+        Authorization := HMACSHA256Mgt.GetAuthorization('myaccount', AccountAccessKey, TextToHash);
 
         // [Then] Verify: 
         ExpectedValue := 'SharedKey myaccount:1a6okLAhbXIYLeEed+zlDbHWB48zDbwr7UYz5OgRO8o=';
@@ -87,7 +87,7 @@ codeunit 60299 "Azure Blob Test"
         WebRequestHelper: Codeunit "Web Request Helper";
         AccountName: Text;
         AccountContainer: Text;
-        AccountPrivateKey: Text;
+        AccountAccessKey: Text;
         FileName: Text;
         BlobUrl: Text;
     begin
@@ -97,11 +97,11 @@ codeunit 60299 "Azure Blob Test"
         DownloadBlob.DownloadDemoBlob(AzureBlobLibrary.GetDemoBlobDownloadUrl(), TempBlob);
         AccountName := AzureBlobLibrary.GetAccountName();
         AccountContainer := AzureBlobLibrary.GetAccountContainer();
-        AccountPrivateKey := AzureBlobLibrary.GetAccountPrivateKey();
+        AccountAccessKey := AzureBlobLibrary.GetAccountAccessKey();
         FileName := 'Test-' + FileNameMgt.GetRandomFileName(TempBlob, '.jpg');
 
         // [When] Exercise:      
-        BlobUrl := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountPrivateKey, FileName);
+        BlobUrl := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountAccessKey, FileName);
 
         // [Then] Verify: 
         ExpectedValue := true;
@@ -119,7 +119,7 @@ codeunit 60299 "Azure Blob Test"
         FileNameMgt: Codeunit "Azure Blob File Name Mgt.";
         AccountName: Text;
         AccountContainer: Text;
-        AccountPrivateKey: Text;
+        AccountAccessKey: Text;
         FileName: Text;
         BlobUrl1: Text;
         BlobUrl2: Text;
@@ -130,12 +130,12 @@ codeunit 60299 "Azure Blob Test"
         DownloadBlob.DownloadDemoBlob(AzureBlobLibrary.GetDemoBlobDownloadUrl(), TempBlob);
         AccountName := AzureBlobLibrary.GetAccountName();
         AccountContainer := AzureBlobLibrary.GetAccountContainer();
-        AccountPrivateKey := AzureBlobLibrary.GetAccountPrivateKey();
+        AccountAccessKey := AzureBlobLibrary.GetAccountAccessKey();
         FileName := 'Test-' + FileNameMgt.GetRandomFileName(TempBlob, '.jpg');
 
         // [When] Exercise:      
-        BlobUrl1 := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountPrivateKey, FileName);
-        BlobUrl2 := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountPrivateKey, FileName);
+        BlobUrl1 := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountAccessKey, FileName);
+        BlobUrl2 := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountAccessKey, FileName);
 
         // [Then] Verify: 
         ExpectedValue := BlobUrl1;
@@ -154,7 +154,7 @@ codeunit 60299 "Azure Blob Test"
         FileNameMgt: Codeunit "Azure Blob File Name Mgt.";
         AccountName: Text;
         AccountContainer: Text;
-        AccountPrivateKey: Text;
+        AccountAccessKey: Text;
         FileName: Text;
         BlobUrl: Text;
         ContentLength: Integer;
@@ -165,12 +165,12 @@ codeunit 60299 "Azure Blob Test"
         DownloadBlob.DownloadDemoBlob(AzureBlobLibrary.GetDemoBlobDownloadUrl(), TempBlob);
         AccountName := AzureBlobLibrary.GetAccountName();
         AccountContainer := AzureBlobLibrary.GetAccountContainer();
-        AccountPrivateKey := AzureBlobLibrary.GetAccountPrivateKey();
+        AccountAccessKey := AzureBlobLibrary.GetAccountAccessKey();
         FileName := 'Test-' + FileNameMgt.GetRandomFileName(TempBlob, '.jpg');
 
         // [When] Exercise:
-        BlobUrl := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountPrivateKey, FileName);
-        ContentLength := GetAzureBlob.GetBlob(TempBlob, AccountName, AccountContainer, AccountPrivateKey, BlobUrl);
+        BlobUrl := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountAccessKey, FileName);
+        ContentLength := GetAzureBlob.GetBlob(TempBlob, AccountName, AccountContainer, AccountAccessKey, BlobUrl);
 
         // [Then] Verify: 
         ExpectedValue := 114074;
@@ -186,7 +186,7 @@ codeunit 60299 "Azure Blob Test"
         GetAzureBlob: Codeunit "Get Azure Blob";
         AccountName: Text;
         AccountContainer: Text;
-        AccountPrivateKey: Text;
+        AccountAccessKey: Text;
         ContentLength: Integer;
     begin
         // [Scenario] Download Image from // https://365links.blob.core.windows.net/azureblobtest/ANNA_20190215_0003-thumb.jpg
@@ -194,10 +194,10 @@ codeunit 60299 "Azure Blob Test"
         // [Given] Setup: 
         AccountName := AzureBlobLibrary.GetAccountName();
         AccountContainer := AzureBlobLibrary.GetAccountContainer();
-        AccountPrivateKey := 'gcHIfdErQ+k3J8VhB5QSxxl9WzHrrdLc9qVqJ/Fl8RGAhIK2bqCCoGEcVqHvFyFRVOA1YwRygl/BLXKME3T/ag==';
+        AccountAccessKey := 'gcHIfdErQ+k3J8VhB5QSxxl9WzHrrdLc9qVqJ/Fl8RGAhIK2bqCCoGEcVqHvFyFRVOA1YwRygl/BLXKME3T/ag==';
 
         // [When] Exercise:      
-        asserterror ContentLength := GetAzureBlob.GetBlob(TempBlob, AccountName, AccountContainer, AccountPrivateKey, AzureBlobLibrary.GetDemoBlobDownloadUrl());
+        asserterror ContentLength := GetAzureBlob.GetBlob(TempBlob, AccountName, AccountContainer, AccountAccessKey, AzureBlobLibrary.GetDemoBlobDownloadUrl());
 
         // [Then] Verify: 
         ExpectedValue := 'Failed to download a blob: Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.';
@@ -217,7 +217,7 @@ codeunit 60299 "Azure Blob Test"
         FileNameMgt: Codeunit "Azure Blob File Name Mgt.";
         AccountName: Text;
         AccountContainer: Text;
-        AccountPrivateKey: Text;
+        AccountAccessKey: Text;
         FileName: Text;
         BlobUrl: Text;
     begin
@@ -227,12 +227,12 @@ codeunit 60299 "Azure Blob Test"
         DownloadBlob.DownloadDemoBlob(AzureBlobLibrary.GetDemoBlobDownloadUrl(), TempBlob);
         AccountName := AzureBlobLibrary.GetAccountName();
         AccountContainer := AzureBlobLibrary.GetAccountContainer();
-        AccountPrivateKey := AzureBlobLibrary.GetAccountPrivateKey();
+        AccountAccessKey := AzureBlobLibrary.GetAccountAccessKey();
         FileName := 'Test-' + FileNameMgt.GetRandomFileName(TempBlob, '.jpg');
 
         // [When] Exercise:      
-        BlobUrl := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountPrivateKey, FileName);
-        DeleteAzureBlob.DeleteBlob(AccountName, AccountContainer, AccountPrivateKey, BlobUrl);
+        BlobUrl := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountAccessKey, FileName);
+        DeleteAzureBlob.DeleteBlob(AccountName, AccountContainer, AccountAccessKey, BlobUrl);
     end;
 
     [Test]
@@ -280,7 +280,7 @@ codeunit 60299 "Azure Blob Test"
         FileNameMgt: Codeunit "Azure Blob File Name Mgt.";
         AccountName: Text;
         AccountContainer: Text;
-        AccountPrivateKey: Text;
+        AccountAccessKey: Text;
         FileName: Text;
         BlobUrl: Text;
     begin
@@ -289,13 +289,13 @@ codeunit 60299 "Azure Blob Test"
         // [Given] Setup: 
         AccountName := AzureBlobLibrary.GetAccountName();
         AccountContainer := AzureBlobLibrary.GetAccountContainer();
-        AccountPrivateKey := AzureBlobLibrary.GetAccountPrivateKey();
+        AccountAccessKey := AzureBlobLibrary.GetAccountAccessKey();
         DownloadBlob.DownloadDemoBlob(AzureBlobLibrary.GetDemoBlobDownloadUrl(), TempBlob);
         FileName := 'Test-' + FileNameMgt.GetRandomFileName(TempBlob, '.jpg');
 
         // [When] Exercise: 
-        BlobUrl := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountPrivateKey, FileName);
-        BlobList.ReadBlobList(AccountName, AccountContainer, AccountPrivateKey);
+        BlobUrl := PutAzureBlob.PutBlob(TempBlob, AccountName, AccountContainer, AccountAccessKey, FileName);
+        BlobList.ReadBlobList(AccountName, AccountContainer, AccountAccessKey);
 
         // [Then] Verify Record Created:
         BlobList.SetRange(Name, FileName);
@@ -315,7 +315,7 @@ codeunit 60299 "Azure Blob Test"
         JSON: Text;
         AccountName: Text;
         AccountContainer: Text;
-        AccountPrivateKey: Text;
+        AccountAccessKey: Text;
         FileName: Text;
         BlobUrl: Text;
         ContentLength: Integer;
@@ -325,13 +325,13 @@ codeunit 60299 "Azure Blob Test"
         // [Given] Setup: 
         AccountName := AzureBlobLibrary.GetAccountName();
         AccountContainer := AzureBlobLibrary.GetAccountContainer();
-        AccountPrivateKey := AzureBlobLibrary.GetAccountPrivateKey();
+        AccountAccessKey := AzureBlobLibrary.GetAccountAccessKey();
         DownloadBlob.DownloadDemoBlob(AzureBlobLibrary.GetDemoBlobDownloadUrl(), TempBlob);
         FileName := 'Test-' + FileNameMgt.GetRandomFileName(TempBlob, '.jpg');
         ContentLength := Tempblob.Blob.Length;
 
         // [When] Exercise: Put Blob
-        SetConfiguration(AccountName, AccountContainer, AccountPrivateKey, JObject);
+        SetConfiguration(AccountName, AccountContainer, AccountAccessKey, JObject);
         JObject.Add('Method', 'PutBlob');
         JObject.Add('FileName', FileName);
         JObject.Add('Content', Tempblob.ToBase64String());
@@ -349,7 +349,7 @@ codeunit 60299 "Azure Blob Test"
         AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
 
         // [When] Exercise: Get Blob
-        SetConfiguration(AccountName, AccountContainer, AccountPrivateKey, JObject);
+        SetConfiguration(AccountName, AccountContainer, AccountAccessKey, JObject);
         JObject.Add('Method', 'GetBlob');
         JObject.Add('Url', BlobUrl);
         JObject.WriteTo(JSON);
@@ -374,7 +374,7 @@ codeunit 60299 "Azure Blob Test"
         AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
 
         // [When] Exercise: List Blob
-        SetConfiguration(AccountName, AccountContainer, AccountPrivateKey, JObject);
+        SetConfiguration(AccountName, AccountContainer, AccountAccessKey, JObject);
         JObject.Add('Method', 'ListBlob');
         JObject.WriteTo(JSON);
         Tempblob.WriteAsText(JSON, TextEncoding::UTF8);
@@ -421,7 +421,7 @@ codeunit 60299 "Azure Blob Test"
         AssertThat.AreNotEqual(ExpectedValue, ActualValue, IfErrorTxt);
 
         // [When] Exercise: Delete Blob
-        SetConfiguration(AccountName, AccountContainer, AccountPrivateKey, JObject);
+        SetConfiguration(AccountName, AccountContainer, AccountAccessKey, JObject);
         JObject.Add('Method', 'DeleteBlob');
         JObject.Add('Url', BlobUrl);
         JObject.WriteTo(JSON);
@@ -431,7 +431,7 @@ codeunit 60299 "Azure Blob Test"
         JObject.Get('Success', JToken);
 
         // [Then] Verify Not in Blob List
-        SetConfiguration(AccountName, AccountContainer, AccountPrivateKey, JObject);
+        SetConfiguration(AccountName, AccountContainer, AccountAccessKey, JObject);
         JObject.Add('Method', 'ListBlob');
         JObject.WriteTo(JSON);
         Tempblob.WriteAsText(JSON, TextEncoding::UTF8);
@@ -450,7 +450,7 @@ codeunit 60299 "Azure Blob Test"
         DeleteAzureBlob: Codeunit "Delete Azure Blob";
         AccountName: Text;
         AccountContainer: Text;
-        AccountPrivateKey: Text;
+        AccountAccessKey: Text;
         ContainerUrl: Text;
     begin
         // [Scenario] Get Blob List from Azure
@@ -458,25 +458,25 @@ codeunit 60299 "Azure Blob Test"
         // [Given] Setup: 
         AccountName := AzureBlobLibrary.GetAccountName();
         AccountContainer := AzureBlobLibrary.GetAccountContainer();
-        AccountPrivateKey := AzureBlobLibrary.GetAccountPrivateKey();
+        AccountAccessKey := AzureBlobLibrary.GetAccountAccessKey();
         ContainerUrl := 'https://' + AccountName + '.blob.core.windows.net/' + AccountContainer + '/';
 
         // [When] Exercise: 
-        BlobList.ReadBlobList(AccountName, AccountContainer, AccountPrivateKey);
+        BlobList.ReadBlobList(AccountName, AccountContainer, AccountAccessKey);
         BlobList.SetFilter(Name, 'Test-*');
         if BlobList.FindSet() then
             repeat
-                DeleteAzureBlob.DeleteBlob(AccountName, AccountContainer, AccountPrivateKey, ContainerUrl + BlobList.Name);
+                DeleteAzureBlob.DeleteBlob(AccountName, AccountContainer, AccountAccessKey, ContainerUrl + BlobList.Name);
             until BlobList.Next() = 0;
 
     end;
 
-    local procedure SetConfiguration(AccountName: Text; AccountContainer: Text; AccountPrivateKey: Text; var JObject: JsonObject)
+    local procedure SetConfiguration(AccountName: Text; AccountContainer: Text; AccountAccessKey: Text; var JObject: JsonObject)
     begin
         Clear(JObject);
         JObject.Add('Name', AccountName);
         JObject.Add('Container', AccountContainer);
-        JObject.Add('PrivateKey', AccountPrivateKey);
+        JObject.Add('AccessKey', AccountAccessKey);
     end;
 
     var

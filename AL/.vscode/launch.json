@@ -5,27 +5,15 @@
                                "type":  "al",
                                "request":  "launch",
                                "name":  "Your own UserPassword server",
-                               "server":  "http://bcsandbox",
-                               "serverInstance":  "NAV",
+                               "server":  "https://traefik.kappi.is",
+                               "port": 443,
+                               "serverInstance":  "kappidev",
                                "authentication":  "UserPassword",
                                "startupObjectId":  130401,
                                "startupObjectType":  "Page",
                                "breakOnError":  false,
                                "launchBrowser":  true,
                                "schemaUpdateMode": "Synchronize"
-                                                       },
-                           {
-                            "type":  "al",
-                            "request":  "launch",
-                            "name":  "Your own Windows  server",
-                            "server":  "http://bcsandbox",
-                            "serverInstance":  "NAV",
-                            "authentication":  "Windows",
-                            "startupObjectId":  130401,
-                            "startupObjectType":  "Page",
-                            "breakOnError":  false,
-                            "launchBrowser":  true,
-                            "schemaUpdateMode": "Synchronize"
-                        }
+                                                       }
                        ]
 }

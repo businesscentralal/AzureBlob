@@ -35,6 +35,7 @@ if ($artifact -like 'https://*') {
     }
 }
 else {
+    Write-Host "Finding Url for $artifact"
     $segments = "$artifact/////".Split('/')
     $artifactUrl = Get-BCArtifactUrl -storageAccount $segments[0] -type $segments[1] -version $segments[2] -country $segments[3] -select $segments[4] -sasToken $env:InsiderSasToken | Select-Object -First 1
     if (-not ($artifactUrl)) {

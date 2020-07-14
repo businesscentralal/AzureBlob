@@ -35,6 +35,7 @@ stages:
       env:
         Password: $(Password)
         LicenseFile: $(LicenseFile)
+        Artifact: $(Artifact)
         ArtifactUrl: $(ArtifactUrl)
       inputs:
         targetType: filePath

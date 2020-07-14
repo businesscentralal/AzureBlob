@@ -62,24 +62,3 @@ $containerName = "$($containerNamePrefix)$("$($ENV:AGENT_NAME)" -replace '[^a-zA
 Write-Host "Set containerName = $containerName"
 Write-Host "##vso[task.setvariable variable=containerName]$containerName"
 
-if ([System.String]::IsNullOrEmpty($ENV:ARTIFACTURL)) {
-    Write-Host "Clear ArtifcatUrl from variables"    
-    Write-Host "##vso[task.setvariable variable=artifacturl]$null"    
-} else {
-    Write-Host "Set ArtifcatUrl from variables"
-    Write-Host "##vso[task.setvariable variable=artifacturl]$ENV:ARTIFACTURL"    
-}
-if ([System.String]::IsNullOrEmpty($ENV:ARTIFACT)) {
-    Write-Host "Clear Artifcat from variables"
-    Write-Host "##vso[task.setvariable variable=artifact]$null"    
-} else {
-    Write-Host "Set Artifcat from variables"
-    Write-Host "##vso[task.setvariable variable=artifact]$ENV:ARTIFACT"    
-}
-if ([System.String]::IsNullOrEmpty($ENV:INSIDERSASTOKEN)) {
-    Write-Host "Clear InsiderSasToken from variables"
-    Write-Host "##vso[task.setvariable variable=InsiderSasToken]$null"    
-} else {
-    Write-Host "Set InsiderSasToken from variables"
-    Write-Host "##vso[task.setvariable variable=InsiderSasToken]$ENV:INSIDERSASTOKEN"    
-}

@@ -23,6 +23,7 @@
 
 if (-not ($artifact)) {
     $artifact = $ENV:ARTIFACT
+    Write-Host "Using artifact $artifact"
 }
 if ($env:InsiderSasToken) {
     Write-Host "Insider Sas Token is specified"

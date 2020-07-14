@@ -18,13 +18,6 @@ if ($appVersion) {
 }
 
 $settings = (Get-Content (Join-Path $buildProjectFolder "scripts\settings.json") | ConvertFrom-Json)
-if ($env:Version) {
-    $version = $env:Version
-}
-if ("$version" -eq "")  {
-    $version = $settings.versions[0].version
-    Write-Host "Version not defined, using $version"
-}
 
 $imageName = "build"
 $property = $settings.PSObject.Properties.Match('imageName')
@@ -49,29 +42,6 @@ Write-Host "##vso[task.setvariable variable=appFolders]$appFolders"
 $testFolders = $settings.testFolders
 Write-Host "Set testFolders = $testFolders"
 Write-Host "##vso[task.setvariable variable=testFolders]$testFolders"
-
-$imageversion = $settings.versions | Where-Object { $_.version -eq $version }
-if ($imageversion) {
-    Write-Host "Set artifact = $($imageVersion.artifact)"
-    Write-Host "##vso[task.setvariable variable=artifact]$($imageVersion.artifact)"
-    "reuseContainer" | ForEach-Object {
-        $property = $imageVersion.PSObject.Properties.Match($_)
-        if ($property.Value) {
-            $propertyValue = $property.Value
-        }
-        else {
-            $propertyValue = $false
-        }
-        Write-Host "Set $_ = $propertyValue"
-        Write-Host "##vso[task.setvariable variable=$_]$propertyValue"
-    }
-    if ($imageVersion.PSObject.Properties.Match("imageName").Value) {
-        $imageName = $imageversion.imageName
-    }
-}
-else {
-    throw "Unknown version: $version"
-}
 
 if ("$($ENV:AGENT_NAME)" -eq "Hosted Agent" -or "$($ENV:AGENT_NAME)" -like "Azure Pipelines*") {
     $containerNamePrefix = ""

@@ -17,8 +17,6 @@ stages:
     steps:
     - task: PowerShell@2
       displayName: 'Reading Settings'
-      env: 
-        version: $(Version)
       inputs:
         targetType: filePath
         filePath: 'scripts\Read-Settings.ps1'
@@ -37,7 +35,7 @@ stages:
       env:
         Password: $(Password)
         LicenseFile: $(LicenseFile)
-        InsiderSasToken: $(InsiderSasToken)
+        ArtifactUrl: $(ArtifactUrl)
       inputs:
         targetType: filePath
         filePath: 'scripts\Create-Container.ps1'

@@ -1,7 +1,13 @@
 {
 	"folders": [
 		{
-			"path": "AL"
+			"path": "app"
+		},
+		{
+			"path": "test"
+		},
+		{
+			"path": "scripts"
 		}
 	],
 	"settings": {}

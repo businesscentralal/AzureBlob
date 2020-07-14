@@ -1,6 +1,6 @@
-codeunit 60202 "List Azure Blob"
+codeunit 60203 "Get Azure Blob"
 {
-    procedure ListBlob(AccountName: Text; AccountContainer: Text; AccountAccessKey: Text; Marker: Text) Xml: XmlDocument
+    procedure GetBlob(VAR TempBlob: Codeunit "Temp Blob"; AccountName: Text; AccountContainer: Text; AccountAccessKey: Text; BlobUrl: Text) ContentLength: Integer
     var
         HMACSHA256Mgt: Codeunit "Azure Blob HMACSHA256 Mgt.";
         WebRequest: HttpRequestMessage;
@@ -8,19 +8,21 @@ codeunit 60202 "List Azure Blob"
         WebContent: HttpContent;
         WebHeaders: HttpHeaders;
         WebClient: HttpClient;
+        OutStr: OutStream;
         InStr: InStream;
         CanonicalizedHeaders: Text;
         CanonicalizedResource: Text;
         Authorization: Text;
-        ResponseXml: Text;
     begin
         Initialize(AccountName);
+        if StrPos(BlobUrl, StorageAccountUrl) <> 1 then error(FailedToGetBlobErr + UrlIncorrectErr);
+        BlobUrl := CopyStr(BlobUrl, StrLen(StorageAccountUrl) + 1);
 
         CanonicalizedHeaders := 'x-ms-date:' + UTCDateTimeText + NewLine + 'x-ms-version:2015-02-21';
-        CanonicalizedResource := StrSubstNo('/%1/%2', AccountName, AccountContainer) + NewLine + 'comp:list' + NewLine + 'marker:' + Marker + NewLine + 'restype:container';
+        CanonicalizedResource := StrSubstNo('/%1/%2', AccountName, BlobUrl);
         Authorization := HMACSHA256Mgt.GetAuthorization(AccountName, AccountAccessKey, HMACSHA256Mgt.GetTextToHash('GET', '', CanonicalizedHeaders, CanonicalizedResource, ''));
 
-        WebRequest.SetRequestUri(StorageAccountUrl + AccountContainer + StrSubstNo('?restype=container&comp=list&marker=%1', Marker));
+        WebRequest.SetRequestUri(StorageAccountUrl + BlobUrl);
         WebRequest.Method('GET');
         WebRequest.GetHeaders(WebHeaders);
         WebHeaders.Add('Authorization', Authorization);
@@ -31,15 +33,17 @@ codeunit 60202 "List Azure Blob"
             error(FailedToGetBlobErr + WebResponse.ReasonPhrase);
         WebContent := WebResponse.Content;
         CreateResponseStream(InStr);
-        WebContent.ReadAs(ResponseXml);
-        XmlDocument.ReadFrom(ResponseXml, Xml);
+        WebContent.ReadAs(InStr);
+        TempBlob.CreateOutStream(OutStr);
+        CopyStream(OutStr, InStr);
+        exit(TempBlob.Length);
     end;
 
     local procedure CreateResponseStream(var InStr: Instream)
     var
-        TempBlob: Record TempBlob;
+        TempBlob: Codeunit "Temp Blob";
     begin
-        TempBlob.Blob.CreateInStream(InStr);
+        TempBlob.CreateInStream(InStr);
     end;
 
     local procedure Initialize(AccountName: Text)

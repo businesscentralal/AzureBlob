@@ -18,7 +18,7 @@ codeunit 60200 "Azure Blob UTC DateTime Mgt."
         TypeHelper: Codeunit "Type Helper";
         DateVariant: Variant;
     begin
-        DateVariant := UTCDate;
+        DateVariant := CurrentDateTime();
         if not TypeHelper.Evaluate(DateVariant, DateTimeText, 'R', '') then exit;
         UTCDate := DateVariant;
     end;

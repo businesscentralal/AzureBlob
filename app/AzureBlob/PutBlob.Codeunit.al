@@ -1,6 +1,6 @@
 codeunit 60204 "Put Azure Blob"
 {
-    procedure PutBlob(VAR TempBlob: Record Tempblob temporary; AccountName: Text; AccountContainer: Text; AccountAccessKey: Text; FileName: Text) BlobUrl: Text
+    procedure PutBlob(VAR TempBlob: Codeunit "Temp Blob"; AccountName: Text; AccountContainer: Text; AccountAccessKey: Text; FileName: Text) BlobUrl: Text
     var
         HMACSHA256Mgt: Codeunit "Azure Blob HMACSHA256 Mgt.";
         FileMgt: Codeunit "File Management";
@@ -14,7 +14,7 @@ codeunit 60204 "Put Azure Blob"
         CanonicalizedResource: Text;
         Authorization: Text;
     begin
-        if not TempBlob.Blob.HasValue() then exit('');
+        if not TempBlob.HasValue() then exit('');
 
         Initialize(AccountName);
         FileName := FileMgt.GetSafeFileName(FileName);
@@ -22,16 +22,16 @@ codeunit 60204 "Put Azure Blob"
 
         CanonicalizedHeaders := 'x-ms-blob-content-disposition:attachment; filename="' + FileName + '"' + NewLine + 'x-ms-blob-type:BlockBlob' + NewLine + 'x-ms-date:' + UTCDateTimeText + NewLine + 'x-ms-version:2015-02-21';
         CanonicalizedResource := StrSubstNo('/%1/%2', AccountName, BlobUrl);
-        Authorization := HMACSHA256Mgt.GetAuthorization(AccountName, AccountAccessKey, HMACSHA256Mgt.GetTextToHash('PUT', FileMgt.GetFileNameMimeType(FileName), CanonicalizedHeaders, CanonicalizedResource, Format(TempBlob.Blob.Length, 0, 9)));
+        Authorization := HMACSHA256Mgt.GetAuthorization(AccountName, AccountAccessKey, HMACSHA256Mgt.GetTextToHash('PUT', FileMgt.GetFileNameMimeType(FileName), CanonicalizedHeaders, CanonicalizedResource, Format(TempBlob.Length, 0, 9)));
 
         WebRequest.SetRequestUri(StorageAccountUrl + BlobUrl);
         WebRequest.Method('PUT');
-        TempBlob.Blob.CreateInStream(InStr);
+        TempBlob.CreateInStream(InStr);
         WebContent.WriteFrom(InStr);
         WebContent.GetHeaders(WebHeaders);
         WebHeaders.Clear();
         WebHeaders.Add('Content-Type', FileMgt.GetFileNameMimeType(FileName));
-        WebHeaders.Add('Content-Length', Format(TempBlob.Blob.Length, 0, 9));
+        WebHeaders.Add('Content-Length', Format(TempBlob.Length, 0, 9));
         WebRequest.Content := WebContent;
         WebRequest.GetHeaders(WebHeaders);
         WebHeaders.Add('Authorization', Authorization);

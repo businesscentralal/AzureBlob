@@ -1,16 +1,16 @@
 {
     "name": "AzureBlob",
-    "appFolders": "AL",
-    "testFolders": "",
+    "appFolders": "app",
+    "testFolders": "test",
     "launch" :{
         "startupObjectId":  22,
         "startupObjectType":  "Page",
         "breakOnError":  true
     },
-    "versions": [
+    "versions": [        
         {
             "version": "current",
-            "artifact": "bcartifacts/sandbox/16.2.13509.14082/us/Latest",
+            "artifact": "https://bcartifacts.azureedge.net/sandbox/16.3.14085.14637/is",
             "imageName": "ci"
         },
         {
@@ -38,11 +38,23 @@
             }
         },
         {
+            "profile": "DESKTOP-V8AGLIU\\GUNNAR",
+            "navContainerHelperPath": "C:\\Users\\gunnar\\Git\\Microsoft\\navcontainerhelper\\navcontainerhelper.ps1",
+            "licenseFilePath": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000001692520fef1a414cbf75b22d0cc0ca4400000000020000000000106600000001000020000000b2e3dd1f0cb17b6c128c64e88bd0411368f941770ea8175b27a711a9667efeea000000000e8000000002000020000000a25234519a4c8475aab300d28d5bdcd7a607108b3a4e3ccb95800eb2120041c1c000000007e40d7cb8f92a089f6162c24541f79f8c279ef93339c6bef622c22bc5a14fd45e760346c677e149ae7b2328109d263019e054ff1cc04ce22828aac3b275a85e4eb24c35f44f9cd75dac317adc76cba8afedfe8ab59df2331f4a8a68867d96142d090e2619abe2618fa6ffc6d57cc05942efa5f8f742b546dc3313aa37f137f1d1448d66a2f6b0840c5fb72f94dd5f9b8b533b9c8b213241a4073a85d5f542f531eafe10eee7bee2277342f35442c73f8172a33d9423aa37d7859c2c9fe0812f4000000080c111c5da045131f2cc218581e3d33b94c16935ef9b821ec0432a90720374d53e6baf44de91a48204b394a92c18368e5395853bf0bd1443a539097027d0c8fd",
+            "Username": "navisionguru",
+            "Password": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000001692520fef1a414cbf75b22d0cc0ca4400000000020000000000106600000001000020000000869883b195b1fb59cdbfaced44072ed7a0e112ab386b398cb6c134747e979b84000000000e800000000200002000000094d7616f085694addf11cc60457b79d86f75ac88b4ca5fff3642333b9249d0452000000071f2fa158836ef93ea8062a38d9f613802da3d25bfbda855640a3683cafc687a40000000136b4c2d883dfbbf5e002951a4ab337a853a38798656018fc93d1e06006cd207521c9509c8689f047d504f0c10162e1054c08f6480980bfe36e2d97bcdcedbbf",
+            "AzureVM": {
+                "ComputerName": "",
+                "Username": "",
+                "Password": ""
+            }
+        },        
+        {
             "profile": "Default",
             "navContainerHelperPath": "",
-            "licenseFilePath": "<licensefile>",
-            "Username": "<username>",
-            "Password": "<encrypted or plain password>",
+            "licenseFilePath": "",
+            "Username": "",
+            "Password": "",
             "AzureVM": {
                 "ComputerName": "<azure VM uri>",
                 "Username": "<azure VM username>",

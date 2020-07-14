@@ -2,15 +2,18 @@ codeunit 60208 "Azure Blob Node Mgt."
 {
     procedure SetFieldValue(var RecRef: RecordRef; FldNo: Integer; XmlSearchNode: XmlNode; NodeName: Text): Boolean
     var
-        TempBlob: Record TempBlob;
+        TempBlob: Codeunit "Temp Blob";
+        Base64: Codeunit "Base64 Convert";
         FldRef: FieldRef;
+        OutStr: OutStream;
     begin
         FldRef := RecRef.Field(FldNo);
         case UpperCase(Format(FldRef.Type)) of
             'BLOB':
                 begin
-                    TempBlob.WriteAsText(FindNodeTextValue(XmlSearchNode, NodeName), TextEncoding::Windows);
-                    FldRef.Value(TempBlob.Blob);
+                    TempBlob.CreateOutStream(OutStr);
+                    Base64.FromBase64(FindNodeTextValue(XmlSearchNode, NodeName), OutStr);
+                    TempBlob.ToFieldRef(FldRef);
                 end;
             'TEXT', 'CODE':
                 FldRef.Value(CopyStr(FindNodeTextValue(XmlSearchNode, NodeName), 1, FldRef.Length));

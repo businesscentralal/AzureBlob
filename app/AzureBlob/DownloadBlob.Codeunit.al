@@ -1,6 +1,6 @@
 codeunit 60206 "Download Blob"
 {
-    procedure DownloadDemoBlob(Url: Text; var TempBlob: Record Tempblob): Boolean
+    procedure DownloadDemoBlob(Url: Text; var TempBlob: Codeunit "Temp Blob"): Boolean
     var
         WebResponse: HttpResponseMessage;
         WebClient: HttpClient;
@@ -11,15 +11,15 @@ codeunit 60206 "Download Blob"
         if not WebResponse.IsSuccessStatusCode then
             error(WebResponse.ReasonPhrase);
         CreateResponseStream(InStr);
-        TempBlob.Blob.CreateOutStream(OutStr);
+        TempBlob.CreateOutStream(OutStr);
         WebResponse.Content.ReadAs(InStr);
         CopyStream(OutStr, InStr);
     end;
 
     local procedure CreateResponseStream(var InStr: Instream)
     var
-        TempBlob: Record TempBlob;
+        TempBlob: Codeunit "Temp Blob";
     begin
-        TempBlob.Blob.CreateInStream(InStr);
+        TempBlob.CreateInStream(InStr);
     end;
 }

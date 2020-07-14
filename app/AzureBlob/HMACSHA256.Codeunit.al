@@ -28,7 +28,7 @@ codeunit 60201 "Azure Blob HMACSHA256 Mgt."
 
     local procedure GenerateKeyedHash(TextToHash: Text; HashKey: Text) KeyedHash: Text
     var
-        EncryptionMgt: Codeunit "Encryption Management";
+        EncryptionMgt: Codeunit "Cryptography Management";
         HashAlgorithmType: Option HMACMD5,HMACSHA1,HMACSHA256,HMACSHA384,HMACSHA512;
     begin
         KeyedHash := EncryptionMgt.GenerateBase64KeyedHashAsBase64String(TextToHash, HashKey, HashAlgorithmType::HMACSHA256)

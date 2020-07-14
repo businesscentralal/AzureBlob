@@ -1,0 +1,18 @@
+{
+    "version":  "0.2.0",
+    "configurations":  [                          
+                           {
+                               "type":  "al",
+                               "request":  "launch",
+                               "name":  "Local Sandbox (AzureBlob-dev)",
+                               "server":  "http://AzureBlob-dev",
+                               "serverInstance":  "BC",
+                               "port":  7049,
+                               "tenant":  "",
+                               "authentication":  "UserPassword",
+                               "startupObjectId":  22,
+                               "startupObjectType":  "Page",
+                               "breakOnError":  true
+                           }
+                       ]
+}

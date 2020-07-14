@@ -1,15 +1,18 @@
 codeunit 60209 "Azure Blob JSON Interface"
 {
-    TableNo = TempBlob;
+    TableNo = "Name/Value Buffer";
 
     trigger OnRun()
     var
-        Tempblob: Record TempBlob;
+        Tempblob: Codeunit "Temp Blob";
         BlobList: Record "Azure Blob List" temporary;
         GetBlob: Codeunit "Get Azure Blob";
         PutBlob: Codeunit "Put Azure Blob";
         DeleteBlob: Codeunit "Delete Azure Blob";
+        Base64: Codeunit "Base64 Convert";
         JObject: JsonObject;
+        InStr: InStream;
+        OutStr: OutStream;
         AccountName: Text;
         AccountContainer: Text;
         AccountAccessKey: Text;
@@ -25,14 +28,16 @@ codeunit 60209 "Azure Blob JSON Interface"
                     BlobUrl := GetJSONValue(JObject, 'Url');
                     Clear(JObject);
                     JObject.Add('Content-Length', GetBlob.GetBlob(TempBlob, AccountName, AccountContainer, AccountAccessKey, BlobUrl));
-                    JObject.Add('Content', TempBlob.ToBase64String());
+                    Tempblob.CreateInStream(InStr);
+                    JObject.Add('Content', Base64.ToBase64(InStr));
                     JObject.Add('Success', true);
                     WriteJSON(JObject, Rec);
                 end;
             'PutBlob':
                 begin
                     FileName := GetJSONValue(JObject, 'FileName');
-                    Tempblob.FromBase64String(GetJSONValue(JObject, 'Content'));
+                    Tempblob.CreateOutStream(OutStr);
+                    Base64.FromBase64(GetJSONValue(JObject, 'Content'), OutStr);
                     Clear(JObject);
                     JObject.Add('Url', PutBlob.PutBlob(Tempblob, AccountName, AccountContainer, AccountAccessKey, FileName));
                     JObject.Add('Success', true);
@@ -59,9 +64,9 @@ codeunit 60209 "Azure Blob JSON Interface"
         end;
     end;
 
-    local procedure ReadJSON(TempBlob: Record Tempblob; var JObject: JsonObject)
+    local procedure ReadJSON(var Buffer: Record "Name/Value Buffer"; var JObject: JsonObject)
     begin
-        JObject.ReadFrom(TempBlob.ReadAsTextWithCRLFLineSeparator());
+        JObject.ReadFrom(Buffer.GetValue());
     end;
 
     local procedure GetJSONValue(JObject: JsonObject; JPath: Text): Text;
@@ -79,12 +84,12 @@ codeunit 60209 "Azure Blob JSON Interface"
         AccountAccessKey := GetJSONValue(JObject, 'AccessKey')
     end;
 
-    local procedure WriteJSON(JObject: JsonObject; var TempBlob: Record Tempblob)
+    local procedure WriteJSON(JObject: JsonObject; var Buffer: Record "Name/Value Buffer")
     var
         JSON: Text;
     begin
         JObject.WriteTo(JSON);
-        TempBlob.WriteAsText(JSON, TextEncoding::UTF8);
+        Buffer.SetValue(JSON);
     end;
 
 }

@@ -3,27 +3,6 @@ codeunit 60299 "Azure Blob Test"
     Subtype = Test;
 
     [Test]
-    procedure VerifyUTCDateParse();
-    var
-        UTCDateTimeMgt: Codeunit "Azure Blob UTC DateTime Mgt.";
-        ExampleDateTime: DateTime;
-        ExampleDateTimeText: Text;
-    begin
-        // [Scenario] Verify UTC Date Parse        
-        // [Given] Setup: 
-        ExampleDateTimeText := UTCDateTimeMgt.GetUTCDateTimeText();
-
-        // [When] Exercise: 
-        ExampleDateTime := UTCDateTimeMgt.ParseUTCDateTimeText(ExampleDateTimeText);
-
-        // [Then] Verify: 
-        ExpectedValue := CurrentDateTime();
-        ActualValue := ExampleDateTime;
-        IfErrorTxt := 'Failed to parse the date time text ' + ExampleDateTimeText;
-        AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
-    end;
-
-    [Test]
     procedure VerifyTextToHash();
     var
         HMACSHA256Mgt: Codeunit "Azure Blob HMACSHA256 Mgt.";
@@ -78,9 +57,10 @@ codeunit 60299 "Azure Blob Test"
     end;
 
     [Test]
+    [HandlerFunctions('AnswerDownloadWarning')]
     procedure VerifyBlobUpload();
     var
-        TempBlob: Record TempBlob;
+        TempBlob: Codeunit "Temp Blob";
         DownloadBlob: Codeunit "Download Blob";
         PutAzureBlob: Codeunit "Put Azure Blob";
         FileNameMgt: Codeunit "Azure Blob File Name Mgt.";
@@ -111,9 +91,10 @@ codeunit 60299 "Azure Blob Test"
     end;
 
     [Test]
+    [HandlerFunctions('AnswerDownloadWarning')]
     procedure VerifyBlobUpdate();
     var
-        TempBlob: Record TempBlob;
+        TempBlob: Codeunit "Temp Blob";
         DownloadBlob: Codeunit "Download Blob";
         PutAzureBlob: Codeunit "Put Azure Blob";
         FileNameMgt: Codeunit "Azure Blob File Name Mgt.";
@@ -145,9 +126,10 @@ codeunit 60299 "Azure Blob Test"
     end;
 
     [Test]
+    [HandlerFunctions('AnswerDownloadWarning')]
     procedure VerifyBlobDownload();
     var
-        TempBlob: Record TempBlob;
+        TempBlob: Codeunit "Temp Blob";
         DownloadBlob: Codeunit "Download Blob";
         PutAzureBlob: Codeunit "Put Azure Blob";
         GetAzureBlob: Codeunit "Get Azure Blob";
@@ -173,16 +155,17 @@ codeunit 60299 "Azure Blob Test"
         ContentLength := GetAzureBlob.GetBlob(TempBlob, AccountName, AccountContainer, AccountAccessKey, BlobUrl);
 
         // [Then] Verify: 
-        ExpectedValue := 114074;
+        ExpectedValue := 25638;
         ActualValue := ContentLength;
         IfErrorTxt := 'Failed to download jpg image';
         AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
     end;
 
     [Test]
+    [HandlerFunctions('AnswerDownloadWarning')]
     procedure VerifyBlobDownloadAuthenticationError();
     var
-        TempBlob: Record TempBlob;
+        TempBlob: Codeunit "Temp Blob";
         GetAzureBlob: Codeunit "Get Azure Blob";
         AccountName: Text;
         AccountContainer: Text;
@@ -208,9 +191,10 @@ codeunit 60299 "Azure Blob Test"
 
 
     [Test]
+    [HandlerFunctions('AnswerDownloadWarning')]
     procedure VerifyBlobDelete();
     var
-        TempBlob: Record TempBlob;
+        TempBlob: Codeunit "Temp Blob";
         DownloadBlob: Codeunit "Download Blob";
         PutAzureBlob: Codeunit "Put Azure Blob";
         DeleteAzureBlob: Codeunit "Delete Azure Blob";
@@ -271,9 +255,10 @@ codeunit 60299 "Azure Blob Test"
     end;
 
     [Test]
+    [HandlerFunctions('AnswerDownloadWarning')]
     procedure VerifyListBlob();
     var
-        TempBlob: Record TempBlob;
+        TempBlob: Codeunit "Temp Blob";
         BlobList: Record "Azure Blob List" temporary;
         DownloadBlob: Codeunit "Download Blob";
         PutAzureBlob: Codeunit "Put Azure Blob";
@@ -303,15 +288,20 @@ codeunit 60299 "Azure Blob Test"
     end;
 
     [Test]
+    [HandlerFunctions('AnswerDownloadWarning')]
     procedure VerifyJSONInterface()
     var
-        Tempblob: Record TempBlob;
+        Buffer: Record "Name/Value Buffer" temporary;
+        Tempblob: Codeunit "Temp Blob";
         DownloadBlob: Codeunit "Download Blob";
         JSONInterface: Codeunit "Azure Blob JSON Interface";
         FileNameMgt: Codeunit "Azure Blob File Name Mgt.";
+        Base64: Codeunit "Base64 Convert";
         JArray: JsonArray;
         JObject: JsonObject;
         JToken: JsonToken;
+        InStr: InStream;
+        OutStr: OutStream;
         JSON: Text;
         AccountName: Text;
         AccountContainer: Text;
@@ -328,17 +318,19 @@ codeunit 60299 "Azure Blob Test"
         AccountAccessKey := AzureBlobLibrary.GetAccountAccessKey();
         DownloadBlob.DownloadDemoBlob(AzureBlobLibrary.GetDemoBlobDownloadUrl(), TempBlob);
         FileName := 'Test-' + FileNameMgt.GetRandomFileName(TempBlob, '.jpg');
-        ContentLength := Tempblob.Blob.Length;
+        ContentLength := Tempblob.Length;
+        Tempblob.CreateInStream(InStr);
+        Buffer.AddNewEntry('', '');
 
         // [When] Exercise: Put Blob
         SetConfiguration(AccountName, AccountContainer, AccountAccessKey, JObject);
         JObject.Add('Method', 'PutBlob');
         JObject.Add('FileName', FileName);
-        JObject.Add('Content', Tempblob.ToBase64String());
+        JObject.Add('Content', Base64.ToBase64(InStr));
         JObject.WriteTo(JSON);
-        Tempblob.WriteAsText(JSON, TextEncoding::UTF8);
-        JSONInterface.Run(Tempblob);
-        JObject.ReadFrom(Tempblob.ReadAsTextWithCRLFLineSeparator());
+        Buffer.SetValue(JSON);
+        JSONInterface.Run(Buffer);
+        JObject.ReadFrom(Buffer.GetValue());
         JObject.Get('Url', JToken);
         BlobUrl := JToken.AsValue().AsText();
 
@@ -353,23 +345,24 @@ codeunit 60299 "Azure Blob Test"
         JObject.Add('Method', 'GetBlob');
         JObject.Add('Url', BlobUrl);
         JObject.WriteTo(JSON);
-        Tempblob.WriteAsText(JSON, TextEncoding::UTF8);
-        JSONInterface.Run(Tempblob);
-        JObject.ReadFrom(Tempblob.ReadAsTextWithCRLFLineSeparator());
+        Buffer.SetValue(JSON);
+        JSONInterface.Run(Buffer);
+        JObject.ReadFrom(Buffer.GetValue());
         JObject.Get('Content', JToken);
-        Tempblob.Init();
-        Tempblob.FromBase64String(JToken.AsValue().AsText());
+        Clear(Tempblob);
+        Tempblob.CreateOutStream(OutStr);
+        Base64.FromBase64(JToken.AsValue().AsText(), OutStr);
         JObject.Get('Content-Length', JToken);
 
         // [Then] Verify Content Length
-        ExpectedValue := 114074;
+        ExpectedValue := 25638;
         ActualValue := JToken.AsValue().AsInteger();
         IfErrorTxt := 'Failed to verify the Get blob Method';
         AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
 
         // [Then] Verify Blob Length
         ExpectedValue := ContentLength;
-        ActualValue := Tempblob.Blob.Length;
+        ActualValue := Tempblob.Length;
         IfErrorTxt := 'Failed to verify the Get blob Method';
         AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
 
@@ -377,9 +370,9 @@ codeunit 60299 "Azure Blob Test"
         SetConfiguration(AccountName, AccountContainer, AccountAccessKey, JObject);
         JObject.Add('Method', 'ListBlob');
         JObject.WriteTo(JSON);
-        Tempblob.WriteAsText(JSON, TextEncoding::UTF8);
-        JSONInterface.Run(Tempblob);
-        JObject.ReadFrom(Tempblob.ReadAsTextWithCRLFLineSeparator());
+        Buffer.SetValue(JSON);
+        JSONInterface.Run(Buffer);
+        JObject.ReadFrom(Buffer.GetValue());
         JObject.Get('List', JToken);
         JArray := JToken.AsArray();
         JArray.SelectToken(StrSubstNo('$[?(@.%1 == ''%2'')]', 'Name', FileName), JToken);
@@ -401,7 +394,7 @@ codeunit 60299 "Azure Blob Test"
 
         // [Then] Verify File Size
         JObject.Get('Size', JToken);
-        ExpectedValue := 114074;
+        ExpectedValue := 25638;
         ActualValue := JToken.AsValue().AsInteger();
         IfErrorTxt := 'Failed to verify the List blob Method';
         AssertThat.AreEqual(ExpectedValue, ActualValue, IfErrorTxt);
@@ -425,18 +418,18 @@ codeunit 60299 "Azure Blob Test"
         JObject.Add('Method', 'DeleteBlob');
         JObject.Add('Url', BlobUrl);
         JObject.WriteTo(JSON);
-        Tempblob.WriteAsText(JSON, TextEncoding::UTF8);
-        JSONInterface.Run(Tempblob);
-        JObject.ReadFrom(Tempblob.ReadAsTextWithCRLFLineSeparator());
+        Buffer.SetValue(JSON);
+        JSONInterface.Run(Buffer);
+        JObject.ReadFrom(Buffer.GetValue());
         JObject.Get('Success', JToken);
 
         // [Then] Verify Not in Blob List
         SetConfiguration(AccountName, AccountContainer, AccountAccessKey, JObject);
         JObject.Add('Method', 'ListBlob');
         JObject.WriteTo(JSON);
-        Tempblob.WriteAsText(JSON, TextEncoding::UTF8);
-        JSONInterface.Run(Tempblob);
-        JObject.ReadFrom(Tempblob.ReadAsTextWithCRLFLineSeparator());
+        Buffer.SetValue(JSON);
+        JSONInterface.Run(Buffer);
+        JObject.ReadFrom(Buffer.GetValue());
         JObject.Get('List', JToken);
         JArray := JToken.AsArray();
         asserterror JArray.SelectToken(StrSubstNo('$[?(@.%1 == ''%2'')]', 'Name', FileName), JToken);
@@ -444,6 +437,7 @@ codeunit 60299 "Azure Blob Test"
     end;
 
     [Test]
+    [HandlerFunctions('AnswerDownloadWarning')]
     procedure DeleteAllTestBlobs();
     var
         BlobList: Record "Azure Blob List" temporary;
@@ -471,6 +465,12 @@ codeunit 60299 "Azure Blob Test"
 
     end;
 
+    [StrMenuHandler]
+    procedure AnswerDownloadWarning(Options: Text[1024]; var Choice: Integer; Instructions: Text[1024])
+    begin
+        Choice := 2; // Allow Once
+    end;
+
     local procedure SetConfiguration(AccountName: Text; AccountContainer: Text; AccountAccessKey: Text; var JObject: JsonObject)
     begin
         Clear(JObject);
@@ -481,7 +481,7 @@ codeunit 60299 "Azure Blob Test"
 
     var
         AzureBlobLibrary: Codeunit "Azure blob Test Library";
-        AssertThat: Codeunit Assert;
+        AssertThat: Codeunit "Library Assert";
         ExpectedValue: Variant;
         ActualValue: Variant;
         IfErrorTxt: Text;

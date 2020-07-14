@@ -13,9 +13,8 @@
   "target": "Extension",
   "dependencies": [],
   "screenshots": [],
-  "platform": "14.0.0.0",
-  "application": "14.0.0.0",
-  "test": "14.0.0.0",
+  "platform": "16.0.0.0",
+  "application": "16.0.0.0",
   "idRanges": [
     {
       "from": 50000,

@@ -2,7 +2,7 @@ codeunit 60298 "Azure blob Test Library"
 {
     procedure GetAccountName(): Text
     begin
-        exit('365links');
+        exit('bcazureblob');
     end;
 
     procedure GetAccountContainer(): Text
@@ -13,12 +13,12 @@ codeunit 60298 "Azure blob Test Library"
     procedure GetAccountAccessKey(): Text
     begin
         // Your current Access Key
-        exit('BwAOOF89WF4yHlM0HtINL/V8n+eEPrjD3+69bX3k0UC4pRq3RejMAuW7WgMwRQbSufvqCkQxi6dg2Lrql2mG9w==');
+        exit('v1hVQPTlXkZC+VTf6Cn8Je8k7GlGyzVZU8P5Qfvp3HRzXdfbIk3ttMN584rA51JPfvuSbQ/jsaDPzfbfd6FAXw==');
     end;
 
     procedure GetDemoBlobDownloadUrl(): Text
     begin
-        exit('https://365links.blob.core.windows.net/azureblobdemo/ANNA_20190215_0003-thumb.png');
+        exit('https://bcazureblob.blob.core.windows.net/azureblobdemo/ANNA_20190215_0003-thumb.jpg');
     end;
 
     procedure GetDemoBlobList(): Text

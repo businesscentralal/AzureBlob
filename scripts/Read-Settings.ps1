@@ -18,6 +18,9 @@ if ($appVersion) {
 }
 
 $settings = (Get-Content (Join-Path $buildProjectFolder "scripts\settings.json") | ConvertFrom-Json)
+if ($env:Version) {
+    $version = $env:Version
+}
 if ("$version" -eq "")  {
     $version = $settings.versions[0].version
     Write-Host "Version not defined, using $version"

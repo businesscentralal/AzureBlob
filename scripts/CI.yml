@@ -1,0 +1,152 @@
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    variables:
+      build.clean: all
+      platform: x64
+      version: "current"
+      appVersion: "1.0"
+      appBuild: $[counter(variables['appVersion'],0)]
+      appRevision: 0
+      createRuntimePackages: False
+      skipComponentGovernanceDetection: True
+
+    pool:
+      vmImage: Windows-2019
+
+    steps:
+    - task: PowerShell@2
+      displayName: 'Reading Settings'
+      inputs:
+        targetType: filePath
+        filePath: 'scripts\Read-Settings.ps1'
+        arguments: '-appVersion "$(appVersion).$(appBuild).$(appRevision)"'
+        failOnStderr: true
+    
+    - task: PowerShell@2
+      displayName: 'Install NavContainerHelper'
+      inputs:
+        targetType: filePath
+        filePath: 'scripts\Install-NavContainerHelper.ps1'
+        failOnStderr: true
+    
+    - task: PowerShell@2
+      displayName: 'Create Build Container'
+      env:
+        Password: $(Password)
+        LicenseFile: $(LicenseFile)
+      inputs:
+        targetType: filePath
+        filePath: 'scripts\Create-Container.ps1'
+        failOnStderr: true
+
+    - task: PowerShell@2
+      displayName: 'Compile App'
+      env:
+        Password: $(Password)
+      inputs:
+        targetType: filePath
+        filePath: 'scripts\Compile-App.ps1'
+        arguments: '-appFolders "$(appFolders)" -appVersion "$(appVersion).$(appBuild).$(appRevision)"'
+        failOnStderr: true
+    
+    - task: PowerShell@2
+      displayName: 'Compile Test App'
+      condition: and(succeeded(),ne(variables['testFolders'],''))
+      env:
+        Password: $(Password)
+      inputs:
+        targetType: filePath
+        filePath: 'scripts\Compile-App.ps1'
+        arguments: '-appFolders "$(testFolders)" -appVersion "$(appVersion).$(appBuild).$(appRevision)"'
+        failOnStderr: true
+    
+    - task: PowerShell@2
+      displayName: 'Sign App'
+      condition: and(succeeded(),ne(variables['CodeSignPfxFile'],''),ne(variables['CodeSignPfxPassword'],''))
+      env:
+        codeSignPfxFile: $(CodeSignPfxFile)
+        codeSignPfxPassword: $(CodeSignPfxPassword)
+      inputs:
+        targetType: filePath
+        filePath: 'scripts\Sign-App.ps1'
+        arguments: '-appFolders "$(appFolders)"'
+        failOnStderr: true
+    
+    - task: PowerShell@2
+      displayName: 'Publish App'
+      inputs:
+        targetType: filePath
+        filePath: 'scripts\Publish-App.ps1'
+        arguments: '-appFolders "$(appFolders)" -skipVerification:("$(CodeSignPfxFile)$(CodeSignPfxPassword)" -eq "")'
+        failOnStderr: true
+    
+    - task: PowerShell@2
+      displayName: 'Publish Test App'
+      condition: and(succeeded(),ne(variables['testFolders'],''))
+      inputs:
+        targetType: filePath
+        filePath: 'scripts\Publish-App.ps1'
+        arguments: '-appFolders "$(testFolders)" -skipVerification'
+        failOnStderr: true
+    
+    - task: PowerShell@2
+      displayName: 'Run Tests'
+      condition: and(succeeded(),ne(variables['testFolders'],''))
+      env:
+        Password: $(Password)
+      inputs:
+        targetType: filePath
+        filePath: 'scripts\Run-Tests.ps1'
+        arguments: '-appFolders "$(testFolders)"'
+        failOnStderr: true
+      
+    - task: PublishTestResults@2
+      displayName: 'Publish Test Results'
+      condition: and(succeeded(),ne(variables['testFolders'],''))
+      inputs:
+        testResultsFormat: XUnit
+        testResultsFiles: TestResults.xml
+        failTaskOnFailedTests: true
+    
+    - task: PowerShell@2
+      displayName: 'Get App RuntimePackage'
+      condition: and(succeeded(),eq(variables['createRuntimePackages'],'True'))
+      inputs:
+        targetType: filePath
+        filePath: 'scripts\Get-AppRuntimePackage.ps1'
+        arguments: '-appFolders "$(appFolders)" -appVersion "$(appVersion).$(appBuild).$(appRevision)"'
+        failOnStderr: true
+
+    - task: PowerShell@2
+      displayName: 'Sign RuntimePackage'
+      condition: and(succeeded(),eq(variables['createRuntimePackages'],'True'),ne(variables['CodeSignPfxFile'],''),ne(variables['CodeSignPfxPassword'],''))
+      env:
+        codeSignPfxFile: $(CodeSignPfxFile)
+        codeSignPfxPassword: $(CodeSignPfxPassword)
+      inputs:
+        targetType: filePath
+        filePath: 'scripts\Sign-App.ps1'
+        arguments: '-appFolders "$(appFolders)" -buildArtifactFolder "$(Build.ArtifactStagingDirectory)\RuntimePackages"'
+        failOnStderr: true
+
+    - task: PowerShell@2
+      displayName: 'Copy deployment scripts'
+      inputs:
+        targetType: inline
+        script: 'Copy-Item -Path scripts\Deploy-App.ps1 -Destination $(Build.ArtifactStagingDirectory); Copy-Item -Path scripts\SessionFunctions.ps1 -Destination $(Build.ArtifactStagingDirectory)'
+        failOnStderr: true
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifacts'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: output
+    
+    - task: PowerShell@2
+      displayName: 'Remove Build Container'
+      condition: ne(variables['reuseContainer'],'True')
+      inputs:
+        targetType: filePath
+        filePath: 'scripts\Remove-Container.ps1'

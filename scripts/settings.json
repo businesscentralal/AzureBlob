@@ -1,0 +1,53 @@
+{
+    "name": "AzureBlob",
+    "appFolders": "AL",
+    "testFolders": "",
+    "launch" :{
+        "startupObjectId":  22,
+        "startupObjectType":  "Page",
+        "breakOnError":  true
+    },
+    "versions": [
+        {
+            "version": "current",
+            "artifact": "bcartifacts/sandbox/16.2.13509.14082/us/Latest",
+            "imageName": "ci"
+        },
+        {
+            "version": "nextminor",
+            "artifact": "bcinsider/sandbox//us/SecondToLastMajor",
+            "imageName": "nextminor"
+        },
+        {
+            "version": "nextmajor",
+            "artifact": "bcinsider/sandbox//us/Latest",
+            "imageName": "nextmajor"
+        }
+    ],
+    "userProfiles": [
+        {
+            "profile": "DESKTOP-O04U8ND\\FREDDYK",
+            "navContainerHelperPath": "C:\\Users\\freddyk\\Documents\\GitHub\\Microsoft\\navcontainerhelper\\navcontainerhelper.ps1",
+            "licenseFilePath": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000004dbe670ae0468d44b6980cf642c82a4f00000000020000000000106600000001000020000000405b02257816ff7a09bc0c64f287ac3e54fa6c4ded3740b5aa37431bbed1e131000000000e80000000020000200000000e5547a6ab3de1866cb3de968a620734e3aacee1c1d3982b37efc5190ccf6aa8800000003b5b62485f7d4dfc6ede0837a5d141d7fae419be0031e85b198156bda1944f2b63034008739def8241f1f621e552be9927ac12adf389ecd5d202cb3b76dc9c0a367e6ae1661ef853cc876fdcf994e477d1b5f9aefb79a12320444bc43c3c08d794f8ea65deb4e2119025d09ae8688786affd70743dd578809e7c98a438b69e3840000000299956a0d2d5cff86ab75d1a03b0d717a1bc3e264d7c00d719cdb415e6c1ba6a91e89ac936d8d1cae47daf8c0a17949b883c59aa537447aa9f1dc423b3392924",
+            "Username": "admin",
+            "Password": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000004dbe670ae0468d44b6980cf642c82a4f000000000200000000001066000000010000200000005411022e19214fd79b48ef6e86d466f7f6bcbebc6fa5d57eccfedbf732a798bd000000000e8000000002000020000000b0136d84e2d48148187680fed0d91262ac68324846e22133451d34afc0097ed52000000084eedce8e91a2045108e69f2055206b47bdbd1058aeee9277d8ae70b0361d398400000005c5e9c6db8cab26b9cc4a11570bc5d03d1a5dc20021c8ffa05a66aa804a81ed2af0575b6c3f331b9f2c2a41ba04bf59f5c6f6bbb1c7ef02536989cce05a124ae",
+            "AzureVM": {
+                "ComputerName": "fkba.northeurope.cloudapp.azure.com",
+                "Username": "vmadmin",
+                "Password": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000004dbe670ae0468d44b6980cf642c82a4f00000000020000000000106600000001000020000000b848d1b8c47dcab7e6822473a05f52e8dc0874e702b6fb887cd8fafc2e1fcadc000000000e800000000200002000000022d2587fddf36b64016dc0e328f2044461661eb49fb6b2f44b561caead49a79420000000ae3412d09f21cc3c599b805973810fb278c666e3f1e345503dad966880c2823440000000d9939997ae7e85daff2f006a6c66152388b7ba7a67e17c6ada4043a24640953d0e8dc3781dd0b013e6e9f7f5cb42fab5a78ad2d654fd2b1e1c0a2fef56040d3a"
+            }
+        },
+        {
+            "profile": "Default",
+            "navContainerHelperPath": "",
+            "licenseFilePath": "<licensefile>",
+            "Username": "<username>",
+            "Password": "<encrypted or plain password>",
+            "AzureVM": {
+                "ComputerName": "<azure VM uri>",
+                "Username": "<azure VM username>",
+                "Password": "<encrypted or plain azure VM password>"
+            }
+        }
+    ]
+}

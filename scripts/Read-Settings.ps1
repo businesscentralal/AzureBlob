@@ -69,7 +69,7 @@ if ("$($ENV:ARTIFACTURL)" -like 'https://*') {
     Write-Host "Set Artifcat from variables"
     Write-Host "##vso[task.setvariable variable=artifact]$ENV:ARTIFACT"    
 }
-if ("$($ENV:InsiderSasToken)" -like '?sv=*') {
+if ("$($ENV:INSIDERSASTOKEN)" -like '?sv=*') {
     Write-Host "Set InsiderSasToken from variables"
-    Write-Host "##vso[task.setvariable variable=InsiderSasToken]$ENV:InsiderSasToken"    
+    Write-Host "##vso[task.setvariable variable=InsiderSasToken]$ENV:INSIDERSASTOKEN"    
 }

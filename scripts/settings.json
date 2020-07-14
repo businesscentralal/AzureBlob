@@ -10,17 +10,17 @@
     "versions": [        
         {
             "version": "current",
-            "artifact": "https://bcartifacts.azureedge.net/sandbox/16.3.14085.14637/is",
+            "artifact": "bcartifacts.azureedge.net/sandbox/16/is/Latest",
             "imageName": "ci"
         },
         {
             "version": "nextminor",
-            "artifact": "bcinsider/sandbox//us/SecondToLastMajor",
+            "artifact": "bcinsider/sandbox//is/SecondToLastMajor",
             "imageName": "nextminor"
         },
         {
             "version": "nextmajor",
-            "artifact": "bcinsider/sandbox//us/Latest",
+            "artifact": "bcinsider/sandbox//is/Latest",
             "imageName": "nextmajor"
         }
     ],

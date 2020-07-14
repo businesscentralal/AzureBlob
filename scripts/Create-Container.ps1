@@ -24,6 +24,9 @@
 if (-not ($artifact)) {
     $artifact = $ENV:ARTIFACT
 }
+if ($env:InsiderSasToken) {
+    Write-Host "Insider Sas Token is specified"
+}
 if ($artifact -like 'https://*') {
     $artifactUrl = $artifact
     if ($env:InsiderSasToken) {

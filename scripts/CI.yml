@@ -20,6 +20,7 @@ stages:
       env:
         Artifact: $(Artifact)
         ArtifactUrl: $(ArtifactUrl)
+        InsiderSasToken: $(InsiderSasToken)
       inputs:
         targetType: filePath
         filePath: 'scripts\Read-Settings.ps1'

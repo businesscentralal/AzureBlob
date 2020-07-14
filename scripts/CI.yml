@@ -17,6 +17,9 @@ stages:
     steps:
     - task: PowerShell@2
       displayName: 'Reading Settings'
+      env:
+        Artifact: $(Artifact)
+        ArtifactUrl: $(ArtifactUrl)
       inputs:
         targetType: filePath
         filePath: 'scripts\Read-Settings.ps1'
@@ -35,8 +38,6 @@ stages:
       env:
         Password: $(Password)
         LicenseFile: $(LicenseFile)
-        Artifact: $(Artifact)
-        ArtifactUrl: $(ArtifactUrl)
       inputs:
         targetType: filePath
         filePath: 'scripts\Create-Container.ps1'

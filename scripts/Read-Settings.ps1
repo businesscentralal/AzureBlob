@@ -61,3 +61,11 @@ else {
 $containerName = "$($containerNamePrefix)$("$($ENV:AGENT_NAME)" -replace '[^a-zA-Z0-9]', '')"
 Write-Host "Set containerName = $containerName"
 Write-Host "##vso[task.setvariable variable=containerName]$containerName"
+
+if ("$($ENV:ARTIFACTURL)" -like 'https://*') {
+    Write-Host "Set ArtifcatUrl from variables"
+    Write-Host "##vso[task.setvariable variable=artifacturl]$ENV:ARTIFACTURL"    
+} else {
+    Write-Host "Set Artifcat from variables"
+    Write-Host "##vso[task.setvariable variable=artifact]$ENV:ARTIFACT"    
+}

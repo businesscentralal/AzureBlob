@@ -34,6 +34,8 @@ if ($env:InsiderSasToken) {
     Write-Host "Using Insider SAS Token"
 }
 
+Get-ChildItem env: 
+
 if ($artifact -like 'https://*') {
     $artifactUrl = $artifact
     if ($env:InsiderSasToken) {

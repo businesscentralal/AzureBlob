@@ -46,7 +46,7 @@ New-Item -Path $alPackagesFolder -ItemType Directory -Force | Out-Null
     -appFolders $settings.testFolders
 
 if ($CodeSignPfxFile) {
-    . ".\scripts\Sign-App.ps1" `
+    . ".\Sign-App.ps1" `
         -buildenv $buildenv `
         -ContainerName $containerName `
         -buildArtifactFolder $buildArtifactFolder `
@@ -70,6 +70,16 @@ if ($CodeSignPfxFile) {
     -buildProjectFolder $ProjectRoot `
     -appFolders $settings.testFolders `
     -skipVerification
+
+if ($testSecret) {
+    . ".\Set-TestSecret.ps1" `
+        -buildenv $buildenv `
+        -ContainerName $containerName `
+        -companyName $settings.testMethod.companyName `
+        -codeunitId $settings.testMethod.codeunitId `
+        -methodName $settings.testMethod.methodName `
+        -argument $testSecret
+}
 
 . ".\Run-Tests.ps1" `
     -buildenv $buildenv `

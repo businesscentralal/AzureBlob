@@ -43,6 +43,19 @@ $testFolders = $settings.testFolders
 Write-Host "Set testFolders = $testFolders"
 Write-Host "##vso[task.setvariable variable=testFolders]$testFolders"
 
+$testCompanyName = $settings.TestMethod.companyName
+Write-Host "Set testCompanyName = $testCompanyName"
+Write-Host "##vso[task.setvariable variable=testCompanyName]$testCompanyName"
+
+$testCodeunitId = $settings.TestMethod.CodeunitId
+Write-Host "Set testCodeunitId = $testCodeunitId"
+Write-Host "##vso[task.setvariable variable=testCodeunitId]$testCodeunitId"
+
+$testMethodName = $settings.TestMethod.MethodName
+Write-Host "Set testMethodName = $testMethodName"
+Write-Host "##vso[task.setvariable variable=testMethodName]$testMethodName"
+
+
 if ("$($ENV:AGENT_NAME)" -eq "Hosted Agent" -or "$($ENV:AGENT_NAME)" -like "Azure Pipelines*") {
     $containerNamePrefix = ""
     Write-Host "Set imageName = ''"

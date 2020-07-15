@@ -40,6 +40,9 @@ if (-not ($imageversion.PSObject.Properties.Name -eq "reuseContainer")) {
 if (-not ($imageversion.PSObject.Properties.Name -eq "imageName")) {
     $imageversion | Add-Member -NotePropertyName imageName -NotePropertyValue $false
 }
+if (-not ($imageversion.PSObject.Properties.Name -eq "insiderBuild")) {
+    $imageversion | Add-Member -NotePropertyName insiderBuild -NotePropertyValue $false
+}
 
 if ($userProfile.licenseFilePath) {
     $licenseFile = try { $userProfile.licenseFilePath | ConvertTo-SecureString } catch { ConvertTo-SecureString -String $userProfile.licenseFilePath -AsPlainText -Force }
@@ -55,6 +58,18 @@ $CodeSignPfxFile = $null
 if (($userProfile.PSObject.Properties.name -eq "CodeSignPfxFilePath") -and ($userProfile.PSObject.Properties.name -eq "CodeSignPfxPassword")) {
     $CodeSignPfxFile = try { $userProfile.CodeSignPfxFilePath | ConvertTo-SecureString } catch { ConvertTo-SecureString -String $userProfile.CodeSignPfxFilePath -AsPlainText -Force }
     $CodeSignPfxPassword = try { $userProfile.CodeSignPfxPassword | ConvertTo-SecureString } catch { ConvertTo-SecureString -String $userProfile.CodeSignPfxPassword -AsPlainText -Force }
+}
+
+$env:InsiderSasToken = $null
+if ($imageversion.insiderBuild) {
+    if (($userProfile.PSObject.Properties.name -eq "InsiderSasToken")) {
+        $env:InsiderSasToken = try { $userProfile.InsiderSasToken | ConvertTo-SecureString } catch { ConvertTo-SecureString -String $userProfile.InsiderSasToken -AsPlainText -Force }
+    }
+}
+
+$TestSecret = $null
+if (($userProfile.PSObject.Properties.name -eq "TestSecret")) {
+    $TestSecret = try { $userProfile.TestSecret | ConvertTo-SecureString } catch { ConvertTo-SecureString -String $userProfile.TestSecret -AsPlainText -Force }
 }
 
 Function UpdateLaunchJson {

@@ -90,12 +90,24 @@ stages:
         filePath: 'scripts\Publish-App.ps1'
         arguments: '-appFolders "$(testFolders)" -skipVerification'
         failOnStderr: true
-    
+     
+    - task: PowerShell@2
+      displayName: 'Set Test Secret'
+      condition: and(succeeded(),ne(variables['TestSecret'],''))
+      env:
+        TestSecret: $(TestSecret)
+      inputs:
+        targetType: filePath
+        filePath: 'scripts\Set-TestSecret.ps1'
+        arguments: '-appFolders "$(testFolders)" -skipVerification'
+        failOnStderr: true
+
     - task: PowerShell@2
       displayName: 'Run Tests'
       condition: and(succeeded(),ne(variables['testFolders'],''))
       env:
         Password: $(Password)
+        TestParameters: $(TestParameters)
       inputs:
         targetType: filePath
         filePath: 'scripts\Run-Tests.ps1'

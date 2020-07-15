@@ -12,8 +12,7 @@ codeunit 60298 "Azure blob Test Library"
 
     procedure GetAccountAccessKey(): Text
     begin
-        // Your current Access Key
-        exit('v1hVQPTlXkZC+VTf6Cn8Je8k7GlGyzVZU8P5Qfvp3HRzXdfbIk3ttMN584rA51JPfvuSbQ/jsaDPzfbfd6FAXw==');
+        exit(GetSecretValue());
     end;
 
     procedure GetDemoBlobDownloadUrl(): Text
@@ -75,4 +74,24 @@ codeunit 60298 "Azure blob Test Library"
             '  <NextMarker />  ' +
             '</EnumerationResults>        ');
     end;
+
+    procedure StoreSecretValue(SecretValue: Text)
+    begin
+        Buffer.InsertRec(0, 0, 0, SecretValue, '');
+    end;
+
+    local procedure GetSecretValue() SecretValue: Text
+    begin
+        if not Buffer.FindFirst() then exit('');
+        SecretValue := Buffer.GetValue();
+    end;
+
+    local procedure GetSecretValueKey() SecretValueKey: Guid
+    begin
+        evaluate(SecretValueKey, 'a77374f7-5054-4b4b-84d1-0f9bc816235a');
+    end;
+
+    var
+        Buffer: Record "Data Exch. Field";
+
 }

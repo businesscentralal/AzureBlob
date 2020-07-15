@@ -35,7 +35,6 @@ stages:
       env:
         Password: $(Password)
         LicenseFile: $(LicenseFile)
-        InsiderSasToken: $(InsiderSasToken)
       inputs:
         targetType: filePath
         filePath: 'scripts\Create-Container.ps1'

@@ -30,11 +30,6 @@ if (-not ($artifact)) {
         $artifact = $ENV:ARTIFACT
     }
 }
-if ($env:InsiderSasToken -eq "`$(InsiderSasToken)") {
-    $env:InsiderSasToken = $null
-} else {
-    Write-Host "Using Insider SAS Token"
-}
 
 if ($artifact -like 'https://*') {
     $artifactUrl = $artifact
@@ -45,8 +40,7 @@ if ($artifact -like 'https://*') {
 else {
     Write-Host "Finding Url for $artifact"
     $segments = "$artifact/////".Split('/')
-    $segments
-    $artifactUrl = Get-BCArtifactUrl -storageAccount $segments[0] -type $segments[1] -version $segments[2] -country $segments[3] -select $segments[4] -sasToken $env:InsiderSasToken -Verbose| Select-Object -First 1
+    $artifactUrl = Get-BCArtifactUrl -storageAccount $segments[0] -type $segments[1] -version $segments[2] -country $segments[3] -select $segments[4] -sasToken $env:InsiderSasToken | Select-Object -First 1
     if (-not ($artifactUrl)) {
         throw "Unable to locate artifactUrl from $artifact"
     }

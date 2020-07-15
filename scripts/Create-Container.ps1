@@ -23,8 +23,10 @@
 
 if (-not ($artifact)) {
     if ($ENV:ARTIFACTURL) {
+        Write-Host "Using Artifact Url variable"
         $artifact = $ENV:ARTIFACTURL
     } else {
+        Write-Host "Using Artifact variable"
         $artifact = $ENV:ARTIFACT
     }
 }

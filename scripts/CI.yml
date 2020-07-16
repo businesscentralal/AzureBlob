@@ -99,7 +99,6 @@ stages:
       inputs:
         targetType: filePath
         filePath: 'scripts\Set-TestSecret.ps1'
-        arguments: '-appFolders "$(testFolders)" -skipVerification'
         failOnStderr: true
 
     - task: PowerShell@2

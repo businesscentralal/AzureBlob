@@ -16,7 +16,7 @@ Param(
     [string] $methodName = $ENV:TESTMETHODNAME,
 
     [Parameter(Mandatory=$false)]
-    [pscredential] $argument = $null
+    [securestring] $argument = $null
 )
 
 if (-not ($argument)) {

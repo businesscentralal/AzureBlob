@@ -51,8 +51,8 @@ if ($CodeSignPfxFile) {
         -ContainerName $containerName `
         -buildArtifactFolder $buildArtifactFolder `
         -appFolders $settings.appFolders `
-        -pfxFile $CodeSignPfxFile `
-        -pfxPassword $CodeSignPfxPassword
+        -codeSignPfxFile $CodeSignPfxFile `
+        -codeSignPfxPassword $CodeSignPfxPassword
 }
 
 . ".\Publish-App.ps1" `

@@ -1,18 +1,17 @@
 {
-    "version":  "0.2.0",
-    "configurations":  [                          
-                           {
-                               "type":  "al",
-                               "request":  "launch",
-                               "name":  "Local Sandbox (AzureBlob-dev)",
-                               "server":  "http://AzureBlob-dev",
-                               "serverInstance":  "BC",
-                               "port":  7049,
-                               "tenant":  "",
-                               "authentication":  "UserPassword",
-                               "startupObjectId":  22,
-                               "startupObjectType":  "Page",
-                               "breakOnError":  true
-                           }
-                       ]
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "al",
+            "request": "launch",
+            "name": "Microsoft cloud sandbox",
+            "sandboxName": "Sandbox-IS",
+            "startupObjectId": 50000,
+            "startupObjectType": "Page",
+            "breakOnError": true,
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true
+        }
+    ]
 }

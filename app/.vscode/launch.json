@@ -5,7 +5,7 @@
             "type": "al",
             "request": "launch",
             "name": "Microsoft cloud sandbox",
-            "sandboxName": "Sandbox-IS",
+            "sandboxName": "Sandbox-vNext",
             "startupObjectId": 50000,
             "startupObjectType": "Page",
             "breakOnError": true,

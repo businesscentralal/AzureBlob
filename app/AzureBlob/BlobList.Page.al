@@ -164,6 +164,25 @@ page 50000 "Azure Blob List"
                         end;
                 end;
             }
+            action(Delete)
+            {
+                Caption = 'Delete File';
+                ApplicationArea = All;
+                ToolTip = 'Delete the selected blob from azure storage.';
+                Image = Delete;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedOnly = true;
+                Scope = Repeater;
+                trigger OnAction()
+                var
+                    DeleteBlob: Codeunit "Delete Azure Blob";
+                begin
+                    DeleteBlob.DeleteBlob(AccountName, ContainerName, AccessKey, 'https://' + AccountName + '.blob.core.windows.net/' + ContainerName + '/' + Rec.Name);
+                    Rec.Delete();
+                    CurrPage.Update(false);
+                end;
+            }
         }
 
     }

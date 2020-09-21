@@ -10,5 +10,10 @@
 			"path": "scripts"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"al.codeAnalyzers": [
+
+		"${PerTenantExtensionCop}"
+		]
+	}
 }

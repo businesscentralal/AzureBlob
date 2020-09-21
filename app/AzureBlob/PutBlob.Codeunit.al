@@ -17,6 +17,7 @@ codeunit 60204 "Put Azure Blob"
         if not TempBlob.HasValue() then exit('');
 
         Initialize(AccountName);
+
         FileName := FileMgt.GetSafeFileName(FileName);
         BlobUrl := AccountContainer + '/' + FileName;
 

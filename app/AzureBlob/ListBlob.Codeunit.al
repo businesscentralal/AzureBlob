@@ -30,7 +30,7 @@ codeunit 60202 "List Azure Blob"
         if not WebResponse.IsSuccessStatusCode then
             error(FailedToGetBlobErr + WebResponse.ReasonPhrase);
         WebContent := WebResponse.Content;
-        CreateResponseStream(InStr);
+        //CreateResponseStream(InStr);
         WebContent.ReadAs(ResponseXml);
         XmlDocument.ReadFrom(ResponseXml, Xml);
     end;

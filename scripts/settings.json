@@ -8,9 +8,9 @@
         "azureContainerName": "artifacts"
     },
     "testMethod": {
-        "companyName": "CRONUS International",
-        "codeunitId": 0,
-        "methodName": ""
+        "companyName": "CRONUS IS",
+        "codeunitId": 60298,
+        "methodName": "StoreSecretValue"
     },
     "versions": [
         {

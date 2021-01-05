@@ -86,11 +86,6 @@ codeunit 60298 "Azure blob Test Library"
         SecretValue := Buffer.GetValue();
     end;
 
-    local procedure GetSecretValueKey() SecretValueKey: Guid
-    begin
-        evaluate(SecretValueKey, 'a77374f7-5054-4b4b-84d1-0f9bc816235a');
-    end;
-
     var
         Buffer: Record "Data Exch. Field";
 

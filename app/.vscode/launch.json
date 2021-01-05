@@ -2,16 +2,23 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Publish: Your own server",
             "type": "al",
             "request": "launch",
-            "name": "Microsoft cloud sandbox",
-            "sandboxName": "Sandbox-IS",
+            "environmentType": "OnPrem",
+            "server": "https://traefik.kappi.is",
+            "port": 443,
+            "serverInstance": "sandboxdev",
+            "authentication": "UserPassword",
             "startupObjectId": 50000,
-            "startupObjectType": "Page",
             "breakOnError": true,
+            "breakOnRecordWrite": false,
             "launchBrowser": true,
+            "enableSqlInformationDebugger": true,
             "enableLongRunningSqlStatements": true,
-            "enableSqlInformationDebugger": true
+            "longRunningSqlStatementsThreshold": 500,
+            "numberOfSqlStatements": 10,
+            "tenant": "default"
         }
     ]
 }

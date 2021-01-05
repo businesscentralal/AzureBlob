@@ -45,42 +45,42 @@ page 50000 "Azure Blob List"
             repeater(General)
             {
                 Editable = false;
-                field(Name; Name)
+                field(Name; Rec.Name)
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Name field';
                 }
-                field("Last Modified"; "Last Modified")
+                field("Last Modified"; Rec."Last Modified")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Last Modified field';
                 }
-                field("E-Tag"; "E-Tag")
+                field("E-Tag"; Rec."E-Tag")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the E-Tag field';
                 }
-                field("Content Length"; "Content Length")
+                field("Content Length"; Rec."Content Length")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Content Length field';
                 }
-                field("Content Type"; "Content Type")
+                field("Content Type"; Rec."Content Type")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Content Type field';
                 }
-                field("Blob Type"; "Blob Type")
+                field("Blob Type"; Rec."Blob Type")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Blob Type field';
                 }
-                field("Lease Status"; "Lease Status")
+                field("Lease Status"; Rec."Lease Status")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Lease Status field';
                 }
-                field("Lease State"; "Lease State")
+                field("Lease State"; Rec."Lease State")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Lease State field';

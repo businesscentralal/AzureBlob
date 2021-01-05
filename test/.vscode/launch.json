@@ -1,18 +1,24 @@
 {
-    "version":  "0.2.0",
-    "configurations":  [                          
-                           {
-                               "type":  "al",
-                               "request":  "launch",
-                               "name":  "Local Sandbox (AzureBlob-dev)",
-                               "server":  "http://AzureBlob-dev",
-                               "serverInstance":  "BC",
-                               "port":  7049,
-                               "tenant":  "",
-                               "authentication":  "UserPassword",
-                               "startupObjectId":  130451,
-                               "startupObjectType":  "Page",
-                               "breakOnError":  true
-                           }
-                       ]
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Publish: Your own server",
+            "type": "al",
+            "request": "launch",
+            "environmentType": "OnPrem",
+            "server": "https://traefik.kappi.is",
+            "port": 443,
+            "serverInstance": "sandboxdev",
+            "authentication": "UserPassword",
+            "startupObjectId": 130451,
+            "breakOnError": true,
+            "breakOnRecordWrite": false,
+            "launchBrowser": true,
+            "enableSqlInformationDebugger": true,
+            "enableLongRunningSqlStatements": true,
+            "longRunningSqlStatementsThreshold": 500,
+            "numberOfSqlStatements": 10,
+            "tenant": "default"
+        }
+    ]
 }

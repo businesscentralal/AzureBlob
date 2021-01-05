@@ -60,7 +60,7 @@ codeunit 60209 "Azure Blob JSON Interface"
                     WriteJSON(JObject, Rec);
                 end;
             else
-                Init();
+                Rec.Init();
         end;
     end;
 

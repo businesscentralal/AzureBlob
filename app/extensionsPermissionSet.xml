@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PermissionSets>
-  <PermissionSet RoleID="AZURE BLOB FILE SYSTEM" RoleName="Azure Blob File System">
+  <PermissionSet RoleID="AZURE BLOB FS" RoleName="Azure Blob File System">
     <Permission>
       <ObjectID>60200</ObjectID>
       <ObjectType>0</ObjectType>

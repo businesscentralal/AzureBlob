@@ -1,69 +1,59 @@
 {
-    "name": "AzureBlob",
+    "name": "BLOB",
     "appFolders": "app",
     "testFolders": "test",
-    "launch" :{
-        "startupObjectId":  22,
-        "startupObjectType":  "Page",
-        "breakOnError":  true
+    "dependencies": [],
+    "azureBlob": {
+        "azureStorageAccount": "365bcfiles",
+        "azureContainerName": "artifacts"
     },
     "testMethod": {
-        "companyName": "CRONUS IS",
-        "codeunitId": 60298,
-        "methodName": "StoreSecretValue"
+        "companyName": "CRONUS International",
+        "codeunitId": 0,
+        "methodName": ""
     },
-    "versions": [        
+    "versions": [
         {
             "version": "current",
-            "artifact": "bcartifacts.azureedge.net/sandbox/16/is/Latest",
+            "artifact": "bcartifacts.azureedge.net/sandbox//w1/latest",
             "imageName": "ci",
             "insiderBuild": false
         },
         {
             "version": "nextminor",
-            "artifact": "bcinsider/sandbox//is/SecondToLastMajor",
-            "imageName": "nextminor",
+            "artifact": "bcinsider/sandbox//w1/SecondToLastMajor",
+            "imageName": "cu",
             "insiderBuild": true
         },
         {
             "version": "nextmajor",
-            "artifact": "bcinsider/sandbox//is/Latest",
-            "imageName": "nextmajor",
+            "artifact": "bcinsider/sandbox//w1/Latest",
+            "imageName": "rtm",
             "insiderBuild": true
+        }
+    ],
+    "validation": [
+        {
+            "branch": "",
+            "previousApps": [],
+            "countries": ["is"],
+            "affixes": ["O4N"],
+            "supportedCountries": ["is"]
+        }
+    ],
+    "deployments": [
+        {
+            "branch": "<disabled>",
+            "DeploymentType": "host",
+            "DeployToName": "",
+            "DeployToTenants": [],
+            "apiBaseUrl": ""
         }
     ],
     "userProfiles": [
         {
-            "profile": "DESKTOP-O04U8ND\\FREDDYK",
-            "navContainerHelperPath": "C:\\Users\\freddyk\\Documents\\GitHub\\Microsoft\\navcontainerhelper\\navcontainerhelper.ps1",
-            "licenseFilePath": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000004dbe670ae0468d44b6980cf642c82a4f00000000020000000000106600000001000020000000405b02257816ff7a09bc0c64f287ac3e54fa6c4ded3740b5aa37431bbed1e131000000000e80000000020000200000000e5547a6ab3de1866cb3de968a620734e3aacee1c1d3982b37efc5190ccf6aa8800000003b5b62485f7d4dfc6ede0837a5d141d7fae419be0031e85b198156bda1944f2b63034008739def8241f1f621e552be9927ac12adf389ecd5d202cb3b76dc9c0a367e6ae1661ef853cc876fdcf994e477d1b5f9aefb79a12320444bc43c3c08d794f8ea65deb4e2119025d09ae8688786affd70743dd578809e7c98a438b69e3840000000299956a0d2d5cff86ab75d1a03b0d717a1bc3e264d7c00d719cdb415e6c1ba6a91e89ac936d8d1cae47daf8c0a17949b883c59aa537447aa9f1dc423b3392924",
-            "Username": "admin",
-            "Password": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000004dbe670ae0468d44b6980cf642c82a4f000000000200000000001066000000010000200000005411022e19214fd79b48ef6e86d466f7f6bcbebc6fa5d57eccfedbf732a798bd000000000e8000000002000020000000b0136d84e2d48148187680fed0d91262ac68324846e22133451d34afc0097ed52000000084eedce8e91a2045108e69f2055206b47bdbd1058aeee9277d8ae70b0361d398400000005c5e9c6db8cab26b9cc4a11570bc5d03d1a5dc20021c8ffa05a66aa804a81ed2af0575b6c3f331b9f2c2a41ba04bf59f5c6f6bbb1c7ef02536989cce05a124ae",
-            "AzureVM": {
-                "ComputerName": "fkba.northeurope.cloudapp.azure.com",
-                "Username": "vmadmin",
-                "Password": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000004dbe670ae0468d44b6980cf642c82a4f00000000020000000000106600000001000020000000b848d1b8c47dcab7e6822473a05f52e8dc0874e702b6fb887cd8fafc2e1fcadc000000000e800000000200002000000022d2587fddf36b64016dc0e328f2044461661eb49fb6b2f44b561caead49a79420000000ae3412d09f21cc3c599b805973810fb278c666e3f1e345503dad966880c2823440000000d9939997ae7e85daff2f006a6c66152388b7ba7a67e17c6ada4043a24640953d0e8dc3781dd0b013e6e9f7f5cb42fab5a78ad2d654fd2b1e1c0a2fef56040d3a"
-            }
-        },
-        {
-            "profile": "DESKTOP-V8AGLIU\\GUNNAR",
-            "navContainerHelperPath": "C:\\Users\\gunnar\\Git\\Microsoft\\navcontainerhelper\\navcontainerhelper.ps1",
-            "licenseFilePath": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000001692520fef1a414cbf75b22d0cc0ca4400000000020000000000106600000001000020000000b2e3dd1f0cb17b6c128c64e88bd0411368f941770ea8175b27a711a9667efeea000000000e8000000002000020000000a25234519a4c8475aab300d28d5bdcd7a607108b3a4e3ccb95800eb2120041c1c000000007e40d7cb8f92a089f6162c24541f79f8c279ef93339c6bef622c22bc5a14fd45e760346c677e149ae7b2328109d263019e054ff1cc04ce22828aac3b275a85e4eb24c35f44f9cd75dac317adc76cba8afedfe8ab59df2331f4a8a68867d96142d090e2619abe2618fa6ffc6d57cc05942efa5f8f742b546dc3313aa37f137f1d1448d66a2f6b0840c5fb72f94dd5f9b8b533b9c8b213241a4073a85d5f542f531eafe10eee7bee2277342f35442c73f8172a33d9423aa37d7859c2c9fe0812f4000000080c111c5da045131f2cc218581e3d33b94c16935ef9b821ec0432a90720374d53e6baf44de91a48204b394a92c18368e5395853bf0bd1443a539097027d0c8fd",
-            "Username": "navisionguru",
-            "Password": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000001692520fef1a414cbf75b22d0cc0ca4400000000020000000000106600000001000020000000869883b195b1fb59cdbfaced44072ed7a0e112ab386b398cb6c134747e979b84000000000e800000000200002000000094d7616f085694addf11cc60457b79d86f75ac88b4ca5fff3642333b9249d0452000000071f2fa158836ef93ea8062a38d9f613802da3d25bfbda855640a3683cafc687a40000000136b4c2d883dfbbf5e002951a4ab337a853a38798656018fc93d1e06006cd207521c9509c8689f047d504f0c10162e1054c08f6480980bfe36e2d97bcdcedbbf",
-            "CodeSignPfxFilePath": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000001692520fef1a414cbf75b22d0cc0ca4400000000020000000000106600000001000020000000fb4249594f37b00bfec24450b1d8d86b99ea03768af701724d5b80d934455244000000000e80000000020000200000005592ca178fd1bb396207e8d233928bcd9eba89de5c762e661eb307cdf1327f5ac0000000d3e21e6b83557a92009cae9b940ee0d34b34bfada6ec4b879d1b6095536ce8d643ac006f51b9fce50be45fee8fe735359eb919a5b7c2f7607ca361ea7cbb46647ee4c7b45e642e88c1727194e938341f119ad596d405907627f05d2f06e4842a832da68bf2ab0d5351e46566762db9bf2512dffdeb8436fc1c5c9b444d48d733dc60d0d6dccd01761b70eb782c653f5ba07b3d6e5a90946632f2a0505d2b46ad94581cf8762014cdf975b5baa4e16aeb773004457c699662cb2c6988ede9cfa940000000fe29834531d643f40dd636b6ba43969b20f6f9481413f21509f0aef02b0c2cf6b8716b305d9f5df409ccc88284e38b09bb62c247f72b60c726f12cc7077dd791",
-            "CodeSignPfxPassword": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000001692520fef1a414cbf75b22d0cc0ca4400000000020000000000106600000001000020000000f3150cdfb64dfa7a45dd64fe1868bbf1fb8a98da8efb8c44f175cddea25bea12000000000e80000000020000200000003a65f41af6fa485f33ec304b7c38a901fa49510524ecdebfc7fb5b7a619e24d7200000006b29e7510f834a76a937c2dbab984fdcbf75862367651c4557ab55e54e496481400000003db05af096659fd0b71ca0e0b8043fbf5cdff687980aca0046f99ad777f8a33aafd7dce1af090f72c49932040a4530617176f845490148140fd189b55026d21b",
-            "InsiderSasToken": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000001692520fef1a414cbf75b22d0cc0ca4400000000020000000000106600000001000020000000aeb25048e4091bfa0bb310c79d018426432f2fd87c2e11c6cf95d99aabd21e92000000000e8000000002000020000000e049e988e27b10c9067a2bfd89c742f266729c31f87a0573388165ccb8feb42b30010000ba4ad8d7c4007a50c61497438fe2f12ef51e208fe83a2fd00c12ec3c56bdd4e196fd1944098c6e8cfe50447795aee7ed3e6d4a341cc774cc68c82b6bf3600c97741a9246d641ec21918a5cefff2be7c4f465ab2b4541a50602d34ee65b641445f5e24908f438f348523110159f4aec98d134007e520f15390fb7849c4ab408f9266837601b9e634c76d2c3ee07555ac1d356eed3b268a66beb1d21d0ea43c74c2d05b6fcb29cb3e3ae17d8957c7ffb367bd47f8987cad2242131e5bd9bff4e88270067c7cbf6647a2225273439b3cc88c27ed5db3a4929c7ad48511096455454aab2a4cb82a6ec0dec0a8b50c84848ea38b1fd3f4bb3f651e091886d507e8af9e310887a2a2e2d67500b04e347e68286c7588346ac45c5fb733d9d93c0b862edfa9ae384f9687a4fe2276439b4a5304440000000e14b55952a9e44889766998178973a669ae232052649f69400ce84ee791cb95014f51d479e3baab16d0e5ecdd4f3b75dacc7421e3ab8f394479738642bbfe26d",
-            "TestSecret": "01000000d08c9ddf0115d1118c7a00c04fc297eb010000001692520fef1a414cbf75b22d0cc0ca4400000000020000000000106600000001000020000000a5eefed729442bff62e43dfec0a2c559eadcf6a7433b9fc6b57204b147effd2a000000000e800000000200002000000067d5f15d0ce3217ae8cecbc67526f2cc1ce7cc62c72a5b067e310bf71339caeec0000000df5dd72de3d262329b1b00edceb01657ecd9852006d6afd46357387dc3ebb49716213d9b7d0860f4e73dd6642005eef35c18a1e30ec39cf7cbcb6784691c5b83dcba8532a9739888f4dcba3891d143efb91c3e25510cbc9af37bd309d5149ff1a2d0db5ce8eadcfd5b8b8c18137509f2c5e16aa14c14bb07ecf1c810727495a4c1b12255aeebcc757e247d117a237e65c841ba96b35cded79d01528629647e8b8276b7a1a185d1ff3d8a9a0fc1fefe4943f2a650cd8b3d03affb7038f4d6068a40000000ff21838f974600234051d2d3ae7ff51f5cfb1b00ea88f10d0501a69b78c1f215dbb9ad4d78e11a74e8107eb6e9c49a9beaabedd55148f6b3ff84f1f09e0ed5ad",
-            "AzureVM": {
-                "ComputerName": "",
-                "Username": "",
-                "Password": ""
-            }
-        },        
-        {
             "profile": "Default",
-            "navContainerHelperPath": "",
+            "bccontainerhelperPath": "",
             "licenseFilePath": "",
             "Username": "",
             "Password": "",

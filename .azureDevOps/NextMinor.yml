@@ -1,0 +1,20 @@
+trigger:
+- main
+
+variables:
+- group: BuildVariables
+- group: InsiderBuilds
+
+resources:
+  repositories:
+    - repository: Template
+      type: git
+      name: Template
+      ref: main
+
+extends:
+  template: /.azureDevOps/CI.yml@Template
+  parameters:
+    version: "nextminor"
+    appVersion: "17.2"
+

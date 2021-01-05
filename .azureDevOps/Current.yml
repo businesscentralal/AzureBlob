@@ -1,0 +1,21 @@
+trigger:
+- '*'
+
+pr: 
+- '*'
+
+resources:
+  repositories:
+    - repository: Template
+      type: git
+      name: Apps/Template
+      ref: main
+
+variables:
+- group: BuildVariables
+
+extends:
+  template: /.azureDevOps/CI.yml@Template
+  parameters:
+    version: "current"
+    appVersion: "17.2"

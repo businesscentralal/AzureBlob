@@ -7,9 +7,6 @@
 			"path": "test"
 		},
 		{
-			"path": "scripts"
-		},
-		{
 			"path": ".azureDevOps"
 		}
 	],

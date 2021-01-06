@@ -5,12 +5,14 @@ variables:
 - group: BuildVariables
 - group: InsiderBuilds
 
+pool: Default
+
 resources:
   repositories:
     - repository: Template
-      type: git
-      name: Template
-      ref: main
+      type: github
+      name: gunnargestsson/bcbuildtemplate
+      ref: master
 
 extends:
   template: /.azureDevOps/CI.yml@Template

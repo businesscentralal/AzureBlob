@@ -4,12 +4,14 @@ trigger:
 pr: 
 - '*'
 
+pool: Default
+
 resources:
   repositories:
     - repository: Template
-      type: git
-      name: Apps/Template
-      ref: main
+      type: github
+      name: gunnargestsson/bcbuildtemplate
+      ref: master
 
 variables:
 - group: BuildVariables

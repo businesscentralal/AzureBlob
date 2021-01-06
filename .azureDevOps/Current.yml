@@ -10,6 +10,7 @@ resources:
   repositories:
     - repository: Template
       type: github
+      endpoint: gunnargestsson # Service Connection
       name: gunnargestsson/bcbuildtemplate
       ref: master
 

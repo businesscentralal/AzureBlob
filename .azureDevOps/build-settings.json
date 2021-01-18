@@ -3,6 +3,9 @@
     "appFolders": "app",
     "testFolders": "test",
     "dependencies": [],
+    "includeTestFrameworkOnly": true,
+    "includeTestLibrariesOnly": false,
+    "testToolkitCountry": "",
     "azureBlob": {
         "azureStorageAccount": "365bcfiles",
         "azureContainerName": "artifacts"

@@ -3,6 +3,7 @@ codeunit 60205 "Delete Azure Blob"
     procedure DeleteBlob(AccountName: Text; AccountContainer: Text; AccountAccessKey: Text; BlobUrl: Text)
     var
         HMACSHA256Mgt: Codeunit "Azure Blob HMACSHA256 Mgt.";
+        TypeHelper: Codeunit "Type Helper";
         WebRequest: HttpRequestMessage;
         WebResponse: HttpResponseMessage;
         WebContent: HttpContent;
@@ -17,6 +18,7 @@ codeunit 60205 "Delete Azure Blob"
         Initialize(AccountName);
         if StrPos(BlobUrl, StorageAccountUrl) <> 1 then error(FailedToDeleteBlobErr + UrlIncorrectErr);
         BlobUrl := CopyStr(BlobUrl, StrLen(StorageAccountUrl) + 1);
+        BlobUrl := TypeHelper.UriEscapeDataString(BlobUrl).Replace('%2F', '/').Replace('%3A', ':');
 
         CanonicalizedHeaders := 'x-ms-date:' + UTCDateTimeText + NewLine + 'x-ms-version:2015-02-21';
         CanonicalizedResource := StrSubstNo('/%1/%2', AccountName, BlobUrl);

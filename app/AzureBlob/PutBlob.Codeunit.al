@@ -4,6 +4,7 @@ codeunit 60204 "Put Azure Blob"
     var
         HMACSHA256Mgt: Codeunit "Azure Blob HMACSHA256 Mgt.";
         FileMgt: Codeunit "File Management";
+        TypeHelper: Codeunit "Type Helper";
         WebRequest: HttpRequestMessage;
         WebResponse: HttpResponseMessage;
         WebContent: HttpContent;
@@ -17,7 +18,7 @@ codeunit 60204 "Put Azure Blob"
         if not TempBlob.HasValue() then exit('');
 
         Initialize(AccountName);
-        FileName := FileMgt.GetSafeFileName(FileName);
+        FileName := TypeHelper.UriEscapeDataString(FileName).Replace('%2F', '/').Replace('%3A', ':');
         BlobUrl := AccountContainer + '/' + FileName;
 
         CanonicalizedHeaders := 'x-ms-blob-content-disposition:attachment; filename="' + FileName + '"' + NewLine + 'x-ms-blob-type:BlockBlob' + NewLine + 'x-ms-date:' + UTCDateTimeText + NewLine + 'x-ms-version:2015-02-21';
